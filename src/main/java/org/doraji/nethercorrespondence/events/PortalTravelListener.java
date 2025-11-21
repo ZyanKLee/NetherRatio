@@ -21,7 +21,6 @@ public class PortalTravelListener implements Listener {
 
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent event) {
-        // 지옥문에 의한 이동이 아니면 무시
         if (event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             return;
         }
@@ -34,18 +33,12 @@ public class PortalTravelListener implements Listener {
 
     @EventHandler
     public void onEntityPortal(EntityPortalEvent event) {
-        // PlayerPortalEvent가 플레이어를 처리하므로, 여기서는 플레이어가 아닌 엔티티만 다룹니다.
         Location newTo = calculatePortalDestination(event.getFrom());
         if (newTo != null) {
             event.setTo(newTo);
         }
     }
 
-    /**
-     * 포탈을 통과한 후의 목적지 좌표를 계산합니다.
-     * @param from 출발지 Location
-     * @return 계산된 목적지 Location, 계산이 불가능하면 null
-     */
     private Location calculatePortalDestination(Location from) {
         double scale = cm.getDouble(ConfigManager.RATIO_VALUE);
         World fromWorld = from.getWorld();
@@ -67,7 +60,7 @@ public class PortalTravelListener implements Listener {
             newX = from.getX() * scale;
             newZ = from.getZ() * scale;
         } else {
-            return null; // 다른 차원 간의 이동은 처리하지 않음
+            return null;
         }
 
         return new Location(toWorld, newX, from.getY(), newZ, from.getYaw(), from.getPitch());
