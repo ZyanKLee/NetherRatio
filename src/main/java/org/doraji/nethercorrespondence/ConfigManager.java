@@ -6,8 +6,6 @@ public class ConfigManager {
 
     private final Nethercorrespondence plugin;
     private FileConfiguration config;
-
-    // 설정 키 (config.yml에 저장될 이름)
     public static final String RATIO_VALUE = "value";
 
     public ConfigManager(Nethercorrespondence plugin) {
