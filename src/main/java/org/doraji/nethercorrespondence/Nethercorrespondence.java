@@ -14,7 +14,7 @@ import org.doraji.nethercorrespondence.commands.WorldRatioCommand;
  * @author xDxRAx (Original Author)
  * @author NetherRatio Team
  * @author ZyanKLee (Maintainer)
- * @version 2.0.1
+ * @version 2.0.2
  */
 public final class Nethercorrespondence extends JavaPlugin {
 
