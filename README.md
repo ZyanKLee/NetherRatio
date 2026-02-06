@@ -182,7 +182,7 @@ mvn clean package
 # The compiled JAR will be in target/
 ```
 
-The built plugin will be available at `target/Nethercorrespondence-2.0.0.jar`
+The built plugin will be available at `target/Nethercorrespondence-2.0.1.jar`
 
 ## 🐛 Troubleshooting
 
