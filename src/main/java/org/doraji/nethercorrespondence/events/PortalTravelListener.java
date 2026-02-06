@@ -6,22 +6,45 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+/**
+ * Listens for portal travel events and applies custom coordinate ratio conversion.
+ * 
+ * <p>This listener intercepts both player and entity portal travel events,
+ * calculates the destination coordinates based on the configured ratio,
+ * and modifies the portal destination accordingly.</p>
+ * 
+ * @author NetherRatio Team
+ * @version 1.0
+ */
 public class PortalTravelListener implements Listener {
 
     private final Nethercorrespondence plugin;
     private final ConfigManager cm;
 
+    /**
+     * Constructs a new PortalTravelListener.
+     * 
+     * @param plugin The main plugin instance
+     */
     public PortalTravelListener(Nethercorrespondence plugin) {
         this.plugin = plugin;
         this.cm = plugin.getConfigManager();
     }
 
-    @EventHandler
+    /**
+     * Handles player portal travel events.
+     * 
+     * <p>Only processes nether portal events, ignoring end portals and other teleportation causes.</p>
+     * 
+     * @param event The PlayerPortalEvent
+     */
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerPortal(PlayerPortalEvent event) {
         if (event.getCause() != PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             return;
@@ -37,7 +60,15 @@ public class PortalTravelListener implements Listener {
         }
     }
 
-    @EventHandler
+    /**
+     * Handles entity portal travel events.
+     * 
+     * <p>Applies coordinate ratio conversion to non-player entities traveling through portals,
+     * such as minecarts, items, or other mobs.</p>
+     * 
+     * @param event The EntityPortalEvent
+     */
+    @EventHandler(priority = EventPriority.HIGH)
     public void onEntityPortal(EntityPortalEvent event) {
         Location newTo = calculatePortalDestination(event.getFrom());
         if (newTo != null) {
@@ -48,6 +79,15 @@ public class PortalTravelListener implements Listener {
         }
     }
 
+    /**
+     * Calculates the portal destination with custom ratio applied.
+     * 
+     * <p>Determines the destination world based on configured world pairs,
+     * then applies the coordinate ratio to calculate the exact destination coordinates.</p>
+     * 
+     * @param from The origin location
+     * @return The calculated destination location, or null if destination cannot be determined
+     */
     private Location calculatePortalDestination(Location from) {
         double scale = cm.getDouble(ConfigManager.RATIO_VALUE);
         World fromWorld = from.getWorld();

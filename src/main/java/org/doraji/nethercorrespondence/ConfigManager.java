@@ -8,6 +8,15 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manages configuration for the NetherRatio plugin.
+ * 
+ * <p>This class handles loading, accessing, and persisting configuration settings,
+ * including the coordinate ratio and world pair mappings for portal travel.</p>
+ * 
+ * @author NetherRatio Team
+ * @version 1.0
+ */
 public class ConfigManager {
 
     private final Nethercorrespondence plugin;
@@ -18,6 +27,11 @@ public class ConfigManager {
     private Map<String, String> overworldToNether;
     private Map<String, String> netherToOverworld;
 
+    /**
+     * Constructs a new ConfigManager.
+     * 
+     * @param plugin The main plugin instance
+     */
     public ConfigManager(Nethercorrespondence plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfig();
@@ -27,6 +41,9 @@ public class ConfigManager {
         loadWorldPairs();
     }
 
+    /**
+     * Loads default configuration values if they don't exist.
+     */
     private void loadDefaultSettings() {
         config.addDefault(RATIO_VALUE, 8);
         config.options().copyDefaults(true);
@@ -99,22 +116,51 @@ public class ConfigManager {
         loadWorldPairs();
     }
 
+    /**
+     * Gets an integer value from the configuration.
+     * 
+     * @param path The configuration path to retrieve
+     * @return The integer value at the specified path
+     */
     public int getInt(String path) {
         return config.getInt(path);
     }
 
+    /**
+     * Gets a boolean value from the configuration.
+     * 
+     * @param path The configuration path to retrieve
+     * @return The boolean value at the specified path
+     */
     public boolean getBoolean(String path) {
         return config.getBoolean(path);
     }
 
+    /**
+     * Gets a double value from the configuration.
+     * 
+     * @param path The configuration path to retrieve
+     * @return The double value at the specified path
+     */
     public double getDouble(String path) {
         return config.getDouble(path);
     }
 
+    /**
+     * Gets a value from the configuration.
+     * 
+     * @param path The configuration path to retrieve
+     * @return The object value at the specified path
+     */
     public Object get(String path) {
         return config.get(path);
     }
 
+    /**
+     * Gets the underlying FileConfiguration object.
+     * 
+     * @return The FileConfiguration instance
+     */
     public FileConfiguration getConfig() {
         return config;
     }
