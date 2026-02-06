@@ -19,8 +19,10 @@ import org.bukkit.event.player.PlayerTeleportEvent;
  * calculates the destination coordinates based on the configured ratio,
  * and modifies the portal destination accordingly.</p>
  * 
+ * @author xDxRAx (Original Author)
  * @author NetherRatio Team
- * @version 1.0
+ * @author ZyanKLee (Maintainer)
+ * @version 2.0
  */
 public class PortalTravelListener implements Listener {
 

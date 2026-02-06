@@ -13,6 +13,10 @@ import java.util.Map;
 
 /**
  * Manages localized messages for the plugin.
+ * 
+ * @author xDxRAx (Original Author)
+ * @author NetherRatio Team
+ * @author ZyanKLee (Maintainer)
  */
 public class MessagesManager {
     

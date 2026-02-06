@@ -11,8 +11,10 @@ import org.doraji.nethercorrespondence.commands.WorldRatioCommand;
  * used when traveling between the Overworld and Nether dimensions through portals.
  * The default Minecraft ratio is 8:1 (8 blocks in Overworld = 1 block in Nether).</p>
  * 
+ * @author xDxRAx (Original Author)
  * @author NetherRatio Team
- * @version 1.0
+ * @author ZyanKLee (Maintainer)
+ * @version 2.0
  */
 public final class Nethercorrespondence extends JavaPlugin {
 

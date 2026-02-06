@@ -6,10 +6,28 @@
 
     <groupId>org.doraji</groupId>
     <artifactId>Nethercorrespondence</artifactId>
-    <version>1.0</version>
+    <version>2.0</version>
     <packaging>jar</packaging>
 
     <name>Nethercorrespondence</name>
+
+    <developers>
+        <developer>
+            <name>xDxRAx</name>
+            <url>https://github.com/xDxRAx</url>
+            <roles>
+                <role>Original Author</role>
+            </roles>
+        </developer>
+        <developer>
+            <name>ZyanKLee</name>
+            <url>https://github.com/ZyanKLee</url>
+            <roles>
+                <role>Maintainer</role>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
 
     <properties>
         <java.version>21</java.version>

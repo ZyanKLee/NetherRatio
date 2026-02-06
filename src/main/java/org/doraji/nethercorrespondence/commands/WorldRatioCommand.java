@@ -13,8 +13,10 @@ import org.jetbrains.annotations.NotNull;
  * <p>Allows administrators to view and modify the Nether-to-Overworld coordinate ratio,
  * as well as reload the plugin configuration.</p>
  * 
+ * @author xDxRAx (Original Author)
  * @author NetherRatio Team
- * @version 1.0
+ * @author ZyanKLee (Maintainer)
+ * @version 2.0
  */
 public class WorldRatioCommand implements CommandExecutor {
 

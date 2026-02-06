@@ -14,8 +14,10 @@ import java.util.Map;
  * <p>This class handles loading, accessing, and persisting configuration settings,
  * including the coordinate ratio and world pair mappings for portal travel.</p>
  * 
+ * @author xDxRAx (Original Author)
  * @author NetherRatio Team
- * @version 1.0
+ * @author ZyanKLee (Maintainer)
+ * @version 2.0
  */
 public class ConfigManager {
 

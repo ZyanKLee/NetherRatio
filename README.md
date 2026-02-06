@@ -174,7 +174,7 @@ The plugin uses the `world-pairs` configuration to determine which Nether world 
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/NetherRatio.git
+git clone https://github.com/ZyanKLee/NetherRatio.git
 cd NetherRatio
 
 # Build with Maven
@@ -183,7 +183,7 @@ mvn clean package
 # The compiled JAR will be in target/
 ```
 
-The built plugin will be available at `target/Nethercorrespondence-1.0.jar`
+The built plugin will be available at `target/Nethercorrespondence-2.0.jar`
 
 ## 🐛 Troubleshooting
 
@@ -237,7 +237,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🔗 Links
 
 - [Download on Modrinth](https://modrinth.com/plugin/netherratio)
-- [Report Issues](https://github.com/yourusername/NetherRatio/issues)
+- [Report Issues](https://github.com/ZyanKLee/NetherRatio/issues)
 - [Paper Documentation](https://docs.papermc.io/)
 
 ## 💖 Support
@@ -246,6 +246,15 @@ If you find this plugin useful, please consider:
 - ⭐ Starring this repository
 - 📢 Sharing it with others
 - 🐛 Reporting bugs and suggesting features
+
+## 🙏 Credits
+
+This project is a fork and continuation of the original work by [xDxRAx](https://github.com/xDxRAx).
+
+**Original Author:** [xDxRAx](https://github.com/xDxRAx)  
+**Current Maintainer:** [ZyanKLee](https://github.com/ZyanKLee)
+
+Special thanks to the original author for creating the foundation of this plugin!
 
 ---
 
