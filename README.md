@@ -1,6 +1,5 @@
 # NetherRatio
 
-[![Download on Modrinth](https://img.shields.io/badge/Download-Modrinth-00AF5C?style=for-the-badge&logo=modrinth)](https://modrinth.com/plugin/netherratio)
 [![Paper](https://img.shields.io/badge/Paper-1.21.4-blue?style=for-the-badge)](https://papermc.io/)
 [![Java](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=openjdk)](https://openjdk.org/)
 
@@ -25,7 +24,7 @@ A Paper/Spigot plugin that allows you to customize the Nether-to-Overworld coord
 
 ## 📥 Installation
 
-1. Download the latest version from [Modrinth](https://modrinth.com/plugin/netherratio)
+1. Download the latest version from [GitHub Releases](https://github.com/ZyanKLee/NetherRatio/releases)
 2. Place the JAR file in your server's `plugins` folder
 3. Restart your server
 4. Configure the plugin in `plugins/NetherRatio/config.yml`
