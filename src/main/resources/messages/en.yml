@@ -1,0 +1,18 @@
+# English Messages
+plugin:
+  enabled: "NetherRatio plugin has been enabled."
+  disabled: "NetherRatio plugin has been disabled."
+  
+command:
+  no-permission: "&cYou do not have permission to use this command."
+  current-ratio: "&aCurrent world ratio: {ratio}"
+  ratio-updated: "&aWorld ratio has been successfully changed to {ratio}."
+  invalid-number: "&cInvalid number format. Usage: /netherratio [number]"
+  invalid-usage: "&cInvalid usage. Usage: /netherratio [<number>]"
+  config-reloaded: "&aConfiguration has been reloaded."
+  
+config:
+  no-world-pairs: "No world-pairs configured, using default (world -> world_nether)"
+  world-pair-loaded: "Loaded world pair: {overworld} <-> {nether}"
+  world-not-found-overworld: "Could not find linked nether world for overworld: {world}. Check world-pairs in config.yml"
+  world-not-found-nether: "Could not find linked overworld for nether: {world}. Check world-pairs in config.yml"

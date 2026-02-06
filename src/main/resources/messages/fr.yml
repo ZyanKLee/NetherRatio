@@ -1,0 +1,18 @@
+# French Messages (Messages français)
+plugin:
+  enabled: "Le plugin NetherRatio a été activé."
+  disabled: "Le plugin NetherRatio a été désactivé."
+  
+command:
+  no-permission: "&cVous n'avez pas la permission d'utiliser cette commande."
+  current-ratio: "&aRatio actuel du monde : {ratio}"
+  ratio-updated: "&aLe ratio du monde a été changé avec succès à {ratio}."
+  invalid-number: "&cFormat de nombre invalide. Utilisation : /netherratio [nombre]"
+  invalid-usage: "&cUtilisation incorrecte. Utilisation : /netherratio [<nombre>]"
+  config-reloaded: "&aLa configuration a été rechargée."
+  
+config:
+  no-world-pairs: "Aucun world-pairs configuré, utilisation par défaut (world -> world_nether)"
+  world-pair-loaded: "Paire de mondes chargée : {overworld} <-> {nether}"
+  world-not-found-overworld: "Impossible de trouver le monde Nether lié pour l'overworld : {world}. Vérifiez world-pairs dans config.yml"
+  world-not-found-nether: "Impossible de trouver l'overworld lié pour le Nether : {world}. Vérifiez world-pairs dans config.yml"

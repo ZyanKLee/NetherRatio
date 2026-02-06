@@ -1,0 +1,18 @@
+# German Messages (Deutsche Nachrichten)
+plugin:
+  enabled: "NetherRatio Plugin wurde aktiviert."
+  disabled: "NetherRatio Plugin wurde deaktiviert."
+  
+command:
+  no-permission: "&cDu hast keine Berechtigung, diesen Befehl zu verwenden."
+  current-ratio: "&aAktuelles Weltverhältnis: {ratio}"
+  ratio-updated: "&aWeltverhältnis wurde erfolgreich auf {ratio} geändert."
+  invalid-number: "&cUngültiges Zahlenformat. Verwendung: /netherratio [Zahl]"
+  invalid-usage: "&cFalsche Verwendung. Verwendung: /netherratio [<Zahl>]"
+  config-reloaded: "&aKonfiguration wurde neu geladen."
+  
+config:
+  no-world-pairs: "Keine world-pairs konfiguriert, verwende Standard (world -> world_nether)"
+  world-pair-loaded: "Weltpaar geladen: {overworld} <-> {nether}"
+  world-not-found-overworld: "Konnte keine verknüpfte Nether-Welt für Oberwelt finden: {world}. Überprüfe world-pairs in config.yml"
+  world-not-found-nether: "Konnte keine verknüpfte Oberwelt für Nether finden: {world}. Überprüfe world-pairs in config.yml"

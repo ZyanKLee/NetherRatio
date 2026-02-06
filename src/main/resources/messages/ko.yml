@@ -1,0 +1,18 @@
+# Korean Messages (한국어 메시지)
+plugin:
+  enabled: "차원대응 플러그인이 활성화되었습니다."
+  disabled: "차원대응 플러그인이 비활성화되었습니다."
+  
+command:
+  no-permission: "&c이 명령어를 사용할 권한이 없습니다."
+  current-ratio: "&a현재 월드 비율: {ratio}"
+  ratio-updated: "&a월드 비율이 {ratio}(으)로 성공적으로 변경되었습니다."
+  invalid-number: "&c잘못된 숫자 형식입니다. 사용법: /netherratio [숫자]"
+  invalid-usage: "&c잘못된 사용법입니다. 사용법: /netherratio [<숫자>]"
+  config-reloaded: "&a설정이 다시 로드되었습니다."
+  
+config:
+  no-world-pairs: "world-pairs가 설정되지 않았습니다. 기본값 사용 (world -> world_nether)"
+  world-pair-loaded: "월드 쌍 로드됨: {overworld} <-> {nether}"
+  world-not-found-overworld: "오버월드 {world}에 대한 네더 월드를 찾을 수 없습니다. config.yml의 world-pairs를 확인하세요"
+  world-not-found-nether: "네더 {world}에 대한 오버월드를 찾을 수 없습니다. config.yml의 world-pairs를 확인하세요"

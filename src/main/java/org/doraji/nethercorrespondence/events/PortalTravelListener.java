@@ -54,8 +54,10 @@ public class PortalTravelListener implements Listener {
             toWorld = cm.getLinkedNetherWorld(fromWorld.getName());
             if (toWorld == null) {
                 // Log warning when world is not found
-                Bukkit.getLogger().warning("Could not find linked nether world for overworld: " 
-                    + fromWorld.getName() + ". Check world-pairs in config.yml");
+                Bukkit.getLogger().warning(Bukkit.getPluginManager().getPlugin("NetherRatio") instanceof Nethercorrespondence ? 
+                    ((Nethercorrespondence) Bukkit.getPluginManager().getPlugin("NetherRatio"))
+                        .getMessagesManager().getMessage("config.world-not-found-overworld", "world", fromWorld.getName()) :
+                    "Could not find linked nether world for overworld: " + fromWorld.getName());
                 return null;
             }
             newX = from.getX() / scale;
@@ -65,8 +67,10 @@ public class PortalTravelListener implements Listener {
             toWorld = cm.getLinkedOverworld(fromWorld.getName());
             if (toWorld == null) {
                 // Log warning when world is not found
-                Bukkit.getLogger().warning("Could not find linked overworld for nether: " 
-                    + fromWorld.getName() + ". Check world-pairs in config.yml");
+                Bukkit.getLogger().warning(Bukkit.getPluginManager().getPlugin("NetherRatio") instanceof Nethercorrespondence ? 
+                    ((Nethercorrespondence) Bukkit.getPluginManager().getPlugin("NetherRatio"))
+                        .getMessagesManager().getMessage("config.world-not-found-nether", "world", fromWorld.getName()) :
+                    "Could not find linked overworld for nether: " + fromWorld.getName());
                 return null;
             }
             newX = from.getX() * scale;

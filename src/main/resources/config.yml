@@ -1,4 +1,7 @@
-# 오버월드 value: 네더 1
+# Language for messages (available: en, de, fr, it, ko)
+language: en
+
+# Overworld value : Nether 1
 # For vanilla Minecraft behavior, set to 8
 value: 8
 

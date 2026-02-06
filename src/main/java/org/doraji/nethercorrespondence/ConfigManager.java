@@ -43,7 +43,7 @@ public class ConfigManager {
         ConfigurationSection worldPairs = config.getConfigurationSection(WORLD_PAIRS);
         if (worldPairs == null) {
             // Use default mapping if not configured
-            plugin.getLogger().warning("No world-pairs configured, using default (world -> world_nether)");
+            plugin.getLogger().warning(plugin.getMessagesManager().getMessage("config.no-world-pairs"));
             overworldToNether.put("world", "world_nether");
             netherToOverworld.put("world_nether", "world");
             return;
@@ -54,7 +54,10 @@ public class ConfigManager {
             if (netherName != null && !netherName.isEmpty()) {
                 overworldToNether.put(overworldName, netherName);
                 netherToOverworld.put(netherName, overworldName);
-                plugin.getLogger().info("Loaded world pair: " + overworldName + " <-> " + netherName);
+                Map<String, String> replacements = new HashMap<>();
+                replacements.put("overworld", overworldName);
+                replacements.put("nether", netherName);
+                plugin.getLogger().info(plugin.getMessagesManager().getMessage("config.world-pair-loaded", replacements));
             }
         }
     }
