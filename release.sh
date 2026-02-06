@@ -69,7 +69,7 @@ echo "Updated $PLUGIN_YML to version $NEW_VERSION."
 # --- Update version in README.md ---
 echo "🔧 Updating version in $README_FILE..."
 # This updates the JAR filename in the build section
-sed -i.bak "s/Nethercorrespondence-.*\.jar/Nethercorrespondence-$NEW_VERSION.jar/" "$README_FILE"
+sed -i.bak "s/NetherRatio-.*\.jar/NetherRatio-$NEW_VERSION.jar/" "$README_FILE"
 rm "${README_FILE}.bak"
 echo "Updated JAR version in $README_FILE."
 

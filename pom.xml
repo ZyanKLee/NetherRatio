@@ -36,6 +36,7 @@
 
     <build>
         <defaultGoal>clean package</defaultGoal>
+        <finalName>NetherRatio-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

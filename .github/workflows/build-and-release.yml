@@ -29,7 +29,7 @@ jobs:
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:
-          files: target/Nethercorrespondence-*.jar
+          files: target/NetherRatio-*.jar
           body: |
             Automated release based on tag ${{ github.ref_name }}.
             The attached JAR file was built automatically.
