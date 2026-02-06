@@ -61,7 +61,8 @@ echo "Updated $POM_FILE to version $NEW_VERSION."
 
 # --- Update version in plugin.yml ---
 echo "🔧 Updating version in $PLUGIN_YML..."
-sed -i.bak "s/version: '.*'/version: '$NEW_VERSION'/" "$PLUGIN_YML"
+# Only update the plugin version line (line 2), not api-version
+sed -i.bak "2s/version: '.*'/version: '$NEW_VERSION'/" "$PLUGIN_YML"
 rm "${PLUGIN_YML}.bak"
 echo "Updated $PLUGIN_YML to version $NEW_VERSION."
 
