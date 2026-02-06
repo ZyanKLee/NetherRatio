@@ -1,2 +1,11 @@
 # 오버월드 value: 네더 1
-value:
+# For vanilla Minecraft behavior, set to 8
+value: 8
+
+# World pairs for portal travel
+# Define which overworld connects to which nether world
+# Format: 'overworld_name: nether_name'
+world-pairs:
+  world: world_nether
+  # Add more world pairs as needed
+  # world2: world2_nether

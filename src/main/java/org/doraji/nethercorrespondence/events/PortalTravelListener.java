@@ -49,17 +49,30 @@ public class PortalTravelListener implements Listener {
         double newZ;
 
         if (fromWorld.getEnvironment() == World.Environment.NORMAL) {
-            toWorld = Bukkit.getWorld(fromWorld.getName() + "_nether");
-            if (toWorld == null) return null;
+            // When traveling from Overworld to Nether, divide by ratio
+            // Example: 8:1 ratio means 800 in overworld = 100 in nether
+            toWorld = cm.getLinkedNetherWorld(fromWorld.getName());
+            if (toWorld == null) {
+                // Log warning when world is not found
+                Bukkit.getLogger().warning("Could not find linked nether world for overworld: " 
+                    + fromWorld.getName() + ". Check world-pairs in config.yml");
+                return null;
+            }
             newX = from.getX() / scale;
             newZ = from.getZ() / scale;
         } else if (fromWorld.getEnvironment() == World.Environment.NETHER) {
-            String overworldName = fromWorld.getName().replace("_nether", "");
-            toWorld = Bukkit.getWorld(overworldName);
-            if (toWorld == null) return null;
+            // When traveling from Nether to Overworld, multiply by ratio
+            toWorld = cm.getLinkedOverworld(fromWorld.getName());
+            if (toWorld == null) {
+                // Log warning when world is not found
+                Bukkit.getLogger().warning("Could not find linked overworld for nether: " 
+                    + fromWorld.getName() + ". Check world-pairs in config.yml");
+                return null;
+            }
             newX = from.getX() * scale;
             newZ = from.getZ() * scale;
         } else {
+            // End or other dimensions - no portal conversion
             return null;
         }
 
