@@ -10,6 +10,8 @@ command:
   invalid-number: "&cInvalid number format. Usage: /netherratio [number]"
   invalid-usage: "&cInvalid usage. Usage: /netherratio [<number>]"
   config-reloaded: "&aConfiguration has been reloaded."
+  ratio-must-be-positive: "&cRatio must be a positive number greater than 0."
+  ratio-too-large: "&cRatio is too large. Please use a value of 1000 or less."
   
 config:
   no-world-pairs: "No world-pairs configured, using default (world -> world_nether)"

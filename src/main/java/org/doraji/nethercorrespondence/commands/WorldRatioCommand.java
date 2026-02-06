@@ -32,6 +32,17 @@ public class WorldRatioCommand implements CommandExecutor {
             try {
                 double newRatio = Double.parseDouble(args[0]);
 
+                // Validate ratio value
+                if (newRatio <= 0 || !Double.isFinite(newRatio)) {
+                    sender.sendMessage(plugin.getMessagesManager().getMessage("command.ratio-must-be-positive"));
+                    return false;
+                }
+                
+                if (newRatio > 1000) {
+                    sender.sendMessage(plugin.getMessagesManager().getMessage("command.ratio-too-large"));
+                    return false;
+                }
+
                 plugin.getConfigManager().setValue("value", newRatio);
 
                 sender.sendMessage(plugin.getMessagesManager().getMessage("command.ratio-updated", "ratio", String.valueOf(newRatio)));

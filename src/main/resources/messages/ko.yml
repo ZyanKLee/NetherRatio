@@ -10,6 +10,8 @@ command:
   invalid-number: "&c잘못된 숫자 형식입니다. 사용법: /netherratio [숫자]"
   invalid-usage: "&c잘못된 사용법입니다. 사용법: /netherratio [<숫자>]"
   config-reloaded: "&a설정이 다시 로드되었습니다."
+  ratio-must-be-positive: "&c비율은 0보다 큰 양수여야 합니다."
+  ratio-too-large: "&c비율이 너무 큽니다. 1000 이하의 값을 사용하세요."
   
 config:
   no-world-pairs: "world-pairs가 설정되지 않았습니다. 기본값 사용 (world -> world_nether)"
