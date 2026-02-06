@@ -27,7 +27,7 @@ public class WorldRatioCommand implements CommandExecutor {
         }
 
         if (args.length == 0) {
-            double currentRatio = plugin.getConfig().getDouble("value", 1.0);
+            double currentRatio = plugin.getSettingsManager().getDouble("value");
             sender.sendMessage("§a현재 월드 비율: " + currentRatio);
             return true;
 
@@ -35,8 +35,7 @@ public class WorldRatioCommand implements CommandExecutor {
             try {
                 double newRatio = Double.parseDouble(args[0]);
 
-                plugin.getConfig().set("value", newRatio);
-                plugin.saveConfig();
+                plugin.getSettingsManager().setValue("value", newRatio);
 
                 sender.sendMessage("§a월드 비율이 " + newRatio + "(으)로 성공적으로 변경되었습니다.");
                 return true;

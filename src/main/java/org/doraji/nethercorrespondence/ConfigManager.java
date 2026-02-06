@@ -115,4 +115,17 @@ public class ConfigManager {
     public FileConfiguration getConfig() {
         return config;
     }
+    
+    /**
+     * Sets a value in the configuration and saves it.
+     * 
+     * @param path The configuration path
+     * @param value The value to set
+     */
+    public void setValue(String path, Object value) {
+        config.set(path, value);
+        plugin.saveConfig();
+        // Refresh cached reference to ensure consistency
+        this.config = plugin.getConfig();
+    }
 }
