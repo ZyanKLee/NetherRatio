@@ -13,10 +13,12 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class PortalTravelListener implements Listener {
 
+    private final Nethercorrespondence plugin;
     private final ConfigManager cm;
 
     public PortalTravelListener(Nethercorrespondence plugin) {
-        this.cm = plugin.getSettingsManager();
+        this.plugin = plugin;
+        this.cm = plugin.getConfigManager();
     }
 
     @EventHandler
@@ -28,6 +30,10 @@ public class PortalTravelListener implements Listener {
         Location newTo = calculatePortalDestination(event.getFrom());
         if (newTo != null) {
             event.setTo(newTo);
+        } else {
+            // World mapping not found, let vanilla behavior handle it or cancel if preferred
+            // Currently allows vanilla portal mechanics to take over
+            plugin.getLogger().fine("Portal destination could not be calculated, using vanilla behavior");
         }
     }
 
@@ -36,13 +42,19 @@ public class PortalTravelListener implements Listener {
         Location newTo = calculatePortalDestination(event.getFrom());
         if (newTo != null) {
             event.setTo(newTo);
+        } else {
+            // World mapping not found, let vanilla behavior handle it
+            plugin.getLogger().fine("Entity portal destination could not be calculated, using vanilla behavior");
         }
     }
 
     private Location calculatePortalDestination(Location from) {
         double scale = cm.getDouble(ConfigManager.RATIO_VALUE);
         World fromWorld = from.getWorld();
-        if (fromWorld == null) return null;
+        if (fromWorld == null) {
+            plugin.getLogger().warning("Cannot calculate portal destination: source world is null");
+            return null;
+        }
 
         World toWorld;
         double newX;
@@ -54,10 +66,9 @@ public class PortalTravelListener implements Listener {
             toWorld = cm.getLinkedNetherWorld(fromWorld.getName());
             if (toWorld == null) {
                 // Log warning when world is not found
-                Bukkit.getLogger().warning(Bukkit.getPluginManager().getPlugin("NetherRatio") instanceof Nethercorrespondence ? 
-                    ((Nethercorrespondence) Bukkit.getPluginManager().getPlugin("NetherRatio"))
-                        .getMessagesManager().getMessage("config.world-not-found-overworld", "world", fromWorld.getName()) :
-                    "Could not find linked nether world for overworld: " + fromWorld.getName());
+                plugin.getLogger().warning(
+                    plugin.getMessagesManager().getMessage("config.world-not-found-overworld", "world", fromWorld.getName())
+                );
                 return null;
             }
             newX = from.getX() / scale;
@@ -67,10 +78,9 @@ public class PortalTravelListener implements Listener {
             toWorld = cm.getLinkedOverworld(fromWorld.getName());
             if (toWorld == null) {
                 // Log warning when world is not found
-                Bukkit.getLogger().warning(Bukkit.getPluginManager().getPlugin("NetherRatio") instanceof Nethercorrespondence ? 
-                    ((Nethercorrespondence) Bukkit.getPluginManager().getPlugin("NetherRatio"))
-                        .getMessagesManager().getMessage("config.world-not-found-nether", "world", fromWorld.getName()) :
-                    "Could not find linked overworld for nether: " + fromWorld.getName());
+                plugin.getLogger().warning(
+                    plugin.getMessagesManager().getMessage("config.world-not-found-nether", "world", fromWorld.getName())
+                );
                 return null;
             }
             newX = from.getX() * scale;
