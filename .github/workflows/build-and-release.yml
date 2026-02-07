@@ -78,15 +78,15 @@ jobs:
           # Step 2: Create version using JWT
           echo "Creating version on Hangar..."
           
-          # Prepare the changelog from release notes
-          CHANGELOG=$(cat RELEASE_NOTES.md | sed 's/"/\\"/g' | tr '\n' ' ')
+          # Prepare the changelog from release notes (properly escape for JSON using Python)
+          CHANGELOG=$(python3 -c "import json, sys; print(json.dumps(sys.stdin.read()))" < RELEASE_NOTES.md)
           
           # Create version JSON matching Hangar API format
           cat > version.json << EOF
           {
             "version": "${VERSION}",
             "channel": "Release",
-            "description": "${CHANGELOG}",
+            "description": ${CHANGELOG},
             "platformDependencies": {
               "PAPER": ["1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11"]
             },
