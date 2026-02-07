@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## ### Added
+
+- Implement coordinate bounds feature and enhance automated release workflow
+
 ## [2.2.0] - 2026-02-07
 
 ### Added
