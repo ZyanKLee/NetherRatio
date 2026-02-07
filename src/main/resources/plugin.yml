@@ -1,5 +1,5 @@
 name: NetherRatio
-version: '2.1.1'
+version: '2.1.2'
 main: org.doraji.netherratio.NetherRatio
 api-version: '1.21'
 commands:
