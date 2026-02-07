@@ -7,7 +7,8 @@ A Paper/Spigot plugin that allows you to customize the Nether-to-Overworld coord
 
 ## ✨ Features
 
-- 🎯 **Customizable Ratio**: Set any ratio for Nether-Overworld portal coordinate conversion
+- 🎯 **Per-World Ratios**: Set different ratios for each world pair
+- 🧮 **Coordinate Calculator**: Calculate portal coordinates without building portals
 - 🌍 **Multi-World Support**: Configure different world pairs for complex server setups
 - 🌐 **Internationalization**: Built-in support for English, German, French, Italian, and Korean
 - ⚡ **Performance Optimized**: Lightweight with minimal server impact
@@ -38,17 +39,31 @@ A Paper/Spigot plugin that allows you to customize the Nether-to-Overworld coord
 # Language for messages (available: en, de, fr, it, ko)
 language: en
 
+# Default ratio for world pairs that don't have a specific ratio configured
 # Overworld value : Nether 1
 # For vanilla Minecraft behavior, set to 8
 value: 8
 
 # World pairs for portal travel
 # Define which overworld connects to which nether world
-# Format: 'overworld_name: nether_name'
+#
+# Simple format (uses default ratio):
+#   overworld_name: nether_name
+#
+# Advanced format (per-world ratio):
+#   overworld_name:
+#     nether: nether_name
+#     ratio: 16
+#
+# Examples:
 world-pairs:
   world: world_nether
-  # Add more world pairs as needed
-  # world2: world2_nether
+  # Example with custom ratio:
+  # survival:
+  #   nether: survival_nether
+  #   ratio: 16
+  # Example with simple format:
+  # creative: creative_nether
 ```
 
 ### Configuration Options
@@ -56,51 +71,108 @@ world-pairs:
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `language` | String | `en` | Language for in-game messages (en, de, fr, it, ko) |
-| `value` | Double | `8` | Coordinate conversion ratio (Overworld blocks : 1 Nether block) |
-| `world-pairs` | Map | `world: world_nether` | Mapping of Overworld worlds to their corresponding Nether worlds |
+| `value` | Double | `8` | Default coordinate conversion ratio (Overworld blocks : 1 Nether block) |
+| `world-pairs` | Map | See below | Mapping of Overworld worlds to their corresponding Nether worlds |
 
-### Examples
+#### World Pairs Configuration
+
+You can configure world pairs using two formats:
+
+**Simple Format** (uses the default ratio from `value`):
+```yaml
+world-pairs:
+  world: world_nether
+  creative: creative_nether
+```
+
+**Advanced Format** (per-world custom ratios):
+```yaml
+world-pairs:
+  world: world_nether  # Uses default ratio (8)
+  survival:
+    nether: survival_nether
+    ratio: 16  # Custom 16:1 ratio for this world pair
+  skyblock:
+    nether: skyblock_nether
+    ratio: 4  # Custom 4:1 ratio for this world pair
+```
+
+### Configuration Examples
+
+**Default Ratio for All Worlds** (8:1):
+```yaml
+value: 8
+world-pairs:
+  world: world_nether
+  survival: survival_nether
+```
 
 **1:1 Ratio** (same coordinates in both dimensions):
 ```yaml
 value: 1
-```
-
-**Vanilla Minecraft** (8:1 ratio):
-```yaml
-value: 8
-```
-
-**Custom Ratio** (16:1 ratio):
-```yaml
-value: 16
-```
-
-**Multiple Worlds**:
-```yaml
 world-pairs:
   world: world_nether
-  survival: survival_nether
-  creative: creative_nether
+```
+
+**Different Ratios Per World**:
+```yaml
+value: 8  # Default ratio
+world-pairs:
+  world: world_nether  # Uses default 8:1
+  survival:
+    nether: survival_nether
+    ratio: 16  # 16:1 for survival world
+  skyblock:
+    nether: skyblock_nether
+    ratio: 1  # 1:1 for skyblock
 ```
 
 ## 🎮 Commands
 
-### `/netherratio`
-Display the current coordinate ratio.
+All commands use a consistent subcommand structure:
+
+### `/netherratio` or `/netherratio list`
+Display all configured ratios (default and per-world).
 
 **Permission**: `netherratio.netherratio`  
-**Usage**: `/netherratio`
+**Usage**: `/netherratio` or `/netherratio list`  
+**Example Output**:
+```
+Default ratio: 8.0
+World-specific ratios:
+  world: 8.0
+  survival: 16.0
+```
 
-### `/netherratio <ratio>`
-Set a new coordinate ratio.
+### `/netherratio set <ratio>`
+Set the default ratio for all world pairs that don't have a specific ratio.
 
 **Permission**: `netherratio.netherratio`  
-**Usage**: `/netherratio 8`  
-**Example**: `/netherratio 16` - Sets a 16:1 ratio
+**Usage**: `/netherratio set <ratio>`  
+**Example**: `/netherratio set 8` - Sets default ratio to 8:1
+
+### `/netherratio set <ratio> <world>`
+Set a custom ratio for a specific world pair.
+
+**Permission**: `netherratio.netherratio`  
+**Usage**: `/netherratio set <ratio> <world>`  
+**Example**: `/netherratio set 16 survival` - Sets 16:1 ratio for the survival world
+
+### `/netherratio calc [x z]`
+Calculate what coordinates in one dimension correspond to in the other dimension.
+
+**Permission**: `netherratio.calc` (default: all players)  
+**Usage**:  
+- `/netherratio calc` - Calculate using your current position  
+- `/netherratio calc 800 600` - Calculate specific coordinates  
+
+**Example Output**:
+```
+Coordinates 800.0, 600.0 in world correspond to 100.0, 75.0 in world_nether
+```
 
 ### `/netherratio reload`
-Reload the plugin configuration.
+Reload the plugin configuration from disk.
 
 **Permission**: `netherratio.netherratio`  
 **Usage**: `/netherratio reload`
@@ -109,7 +181,8 @@ Reload the plugin configuration.
 
 | Permission | Description | Default |
 |------------|-------------|---------|
-| `netherratio.netherratio` | Allows using all `/netherratio` commands | OP only |
+| `netherratio.netherratio` | Allows managing ratios and reloading config | OP only |
+| `netherratio.calc` | Allows using the coordinate calculator | Everyone |
 
 ### Permission Examples
 
