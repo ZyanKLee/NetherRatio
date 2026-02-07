@@ -2,74 +2,108 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
 
-## ### Added
+### Fixed
+
+- Correct authorization header format for Hangar API
+
+## [2.2.2] - 2026-02-07
+
+### Added
 
 - Enhance Hangar publishing step with versioning and platform support
 
+### Changed
 
-## ### Added
+- Release v2.2.2
+
+## [2.2.1] - 2026-02-07
+
+### Added
 
 - Implement coordinate bounds feature and enhance automated release workflow
+
+### Changed
+
+- Release v2.2.1
 
 ## [2.2.0] - 2026-02-07
 
 ### Added
-- **Coordinate Bounds**: New safety feature to prevent teleportation into ungenerated chunks or beyond world borders
-  - Configurable min/max X and Z coordinate limits
-  - Automatic clamping of portal destinations to safe areas
-  - Disabled by default for backward compatibility
-  - Documented in all language files
-- Automated publishing workflow for Modrinth and Hangar platforms via GitHub Actions
-- Enhanced release script with automated deployment instructions
+
+- Enhance automated publishing workflow and update release script instructions
+- Add coordinate bounds configuration and clamping logic for portal travel
 
 ### Changed
-- Updated Paper API dependency to 1.21.11-R0.1-SNAPSHOT for latest compatibility
-- Merged separate publishing workflow into unified build-and-release workflow
-- Improved configuration documentation with coordinate bounds examples
 
-### Technical
-- Added `coordinate-bounds` configuration section with `enabled`, `min-x`, `max-x`, `min-z`, `max-z` options
-- Added bounds validation and clamping methods to ConfigManager
-- Enhanced PortalTravelListener to check and enforce coordinate bounds
-- Updated README with comprehensive coordinate bounds documentation
+- Release v2.2.0
+
+### Fixed
+
+- Update paper-api dependency version to 1.21.11-R0.1-SNAPSHOT
 
 ## [2.1.2] - 2026-02-07
 
 ### Added
-- GitHub Actions workflow for automated publishing to Modrinth and Hangar
+
+- Add automated publishing setup with GitHub Actions and update release script instructions
 
 ### Changed
-- Enhanced release script with better instructions for GitHub releases
-- Updated publishing documentation
+
+- Release v2.1.2
 
 ## [2.1.1] - 2026-02-07
 
 ### Added
-- Per-World Ratio Configuration: Set different ratios for specific world/nether pairs
-- Portal Coordinate Calculator: Calculate portal coordinates without traveling (`/netherratio calc [x z]`)
-- Improved command structure with consistent subcommands (list, set, calc, reload)
+
+- Update README with enhanced configuration options and examples for per-world ratios
 
 ### Changed
-- Refactored command system to use subcommand pattern
-- Updated configuration format to support both simple and advanced world-pair definitions
-- Renamed project from NetherCorrespondence to NetherRatio for clarity
-- Enhanced permission system with `netherratio.calc` for coordinate calculator access
+
+- Release v2.1.1
+
+## [2.1.0] - 2026-02-07
+
+### Added
+
+- Implement per-world ratios and enhance command functionality for NetherRatio
+- Enhance WorldRatioCommand with subcommands and improve command usage messages
+
+### Changed
+
+- Release v2.1.0
 
 ### Fixed
-- Build compatibility issues with MessagesManager API
-- Package naming consistency across all files
 
-## [2.0.2] - Previous Release
+- Update Paper version in README to 1.21.10
 
-### Added
-- Initial multi-language support (English, German, French, Italian, Korean)
-- Basic world ratio configuration
-- Portal travel coordinate conversion
+### Refactored
 
-## [1.0.0] - Initial Release
+- Rename Nethercorrespondence to NetherRatio across project files and update permissions
 
-### Added
-- Core Nether/Overworld coordinate conversion functionality
-- Configuration system for custom ratios
-- Basic command interface
+## [2.0.2] - 2026-02-06
+
+### Changed
+
+- Release v2.0.2
+
+### Fixed
+
+- Update references from Nethercorrespondence to NetherRatio in build files and scripts
+
+## [2.0.1] - 2026-02-06
+
+### Changed
+
+- Release v2.0.1
+
+### Fixed
+
+- Update version in plugin.yml to maintain compatibility with API version
+
+## [2.0.0] - 2026-02-06
+
+### Changed
+
+- Release v2.0.0
