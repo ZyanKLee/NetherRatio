@@ -2,7 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [2.3.1] - 2026-02-08
+
+### Added
+
+- Enhance Hangar upload process with JWT authentication and version creation
+
+### Changed
+
+- **release**: Update CHANGELOG.md with version number and date after release
+
+## [2.3.0] - 2026-02-07
 
 ### Added
 
@@ -12,6 +22,7 @@ All notable changes to this project will be documented in this file.
 
 - **release**: Update release process to generate and use release notes with git-cliff
 - **release**: Update changelog generation command in release script
+- Release v2.3.0
 
 ## [2.2.3] - 2026-02-07
 
