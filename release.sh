@@ -84,6 +84,11 @@ echo "📝 Updating CHANGELOG.md..."
 if command -v git-cliff &> /dev/null; then
     # Generate changelog for the new version
     git-cliff --output CHANGELOG.md
+    
+    # Replace [Unreleased] with the actual version number
+    sed -i.bak "s/\[Unreleased\]/[$NEW_VERSION] - $(date +%Y-%m-%d)/" CHANGELOG.md
+    rm CHANGELOG.md.bak
+    
     echo "Updated CHANGELOG.md with changes for $TAG_NAME."
 else
     echo "⚠️  Warning: git-cliff not found. Skipping CHANGELOG.md update."
