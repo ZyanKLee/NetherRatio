@@ -74,6 +74,12 @@ world-pairs:
   # survival:
   #   nether: survival_nether
   #   ratio: 16
+  # Example with coordinate offsets:
+  # adventure:
+  #   nether: adventure_nether
+  #   ratio: 8
+  #   offset-x: 1000
+  #   offset-z: -500
   # Example with simple format:
   # creative: creative_nether
 ```
@@ -129,7 +135,7 @@ world-pairs:
   creative: creative_nether
 ```
 
-**Advanced Format** (per-world custom ratios):
+**Advanced Format** (per-world custom ratios and offsets):
 ```yaml
 world-pairs:
   world: world_nether  # Uses default ratio (8)
@@ -139,7 +145,36 @@ world-pairs:
   skyblock:
     nether: skyblock_nether
     ratio: 4  # Custom 4:1 ratio for this world pair
+  adventure:
+    nether: adventure_nether
+    ratio: 8
+    offset-x: 1000   # Add 1000 blocks to X when going to nether
+    offset-z: -500   # Subtract 500 blocks from Z when going to nether
 ```
+
+**Coordinate Offsets:**
+The `offset-x` and `offset-z` options allow you to shift the entire nether coordinate space relative to the overworld. This is useful for:
+- Aligning spawn points between dimensions
+- Creating separated nether regions for different overworld areas
+- Custom world designs where nether and overworld don't share the same origin
+
+**How offsets work:**
+- When traveling **Overworld → Nether**: Coordinates are divided by ratio, then offsets are **added**
+- When traveling **Nether → Overworld**: Offsets are **subtracted** first, then coordinates are multiplied by ratio
+
+**Example:**
+```yaml
+world-pairs:
+  world:
+    nether: world_nether
+    ratio: 8
+    offset-x: 1000
+    offset-z: 0
+```
+With this configuration:
+- Overworld (0, 0) → Nether (1000, 0)
+- Overworld (800, 0) → Nether (1100, 0)
+- Nether (1000, 0) → Overworld (0, 0)
 
 ### Configuration Examples
 

@@ -30,6 +30,8 @@ public class ConfigManager {
     private Map<String, String> overworldToNether;
     private Map<String, String> netherToOverworld;
     private Map<String, Double> worldPairRatios;
+    private Map<String, Double> worldPairOffsetX;
+    private Map<String, Double> worldPairOffsetZ;
     private double defaultRatio;
     private boolean boundsEnabled;
     private int minX;
@@ -48,6 +50,8 @@ public class ConfigManager {
         this.overworldToNether = new HashMap<>();
         this.netherToOverworld = new HashMap<>();
         this.worldPairRatios = new HashMap<>();
+        this.worldPairOffsetX = new HashMap<>();
+        this.worldPairOffsetZ = new HashMap<>();
         loadDefaultSettings();
         loadWorldPairs();
     }
@@ -95,6 +99,8 @@ public class ConfigManager {
         overworldToNether.clear();
         netherToOverworld.clear();
         worldPairRatios.clear();
+        worldPairOffsetX.clear();
+        worldPairOffsetZ.clear();
         
         // Load default/global ratio
         defaultRatio = config.getDouble(RATIO_VALUE, 8.0);
@@ -119,10 +125,16 @@ public class ConfigManager {
                 ConfigurationSection pairConfig = (ConfigurationSection) value;
                 netherName = pairConfig.getString("nether");
                 ratio = pairConfig.getDouble("ratio", defaultRatio);
+                double offsetX = pairConfig.getDouble("offset-x", 0.0);
+                double offsetZ = pairConfig.getDouble("offset-z", 0.0);
+                worldPairOffsetX.put(overworldName, offsetX);
+                worldPairOffsetZ.put(overworldName, offsetZ);
             } else if (value instanceof String) {
                 // Old format: world-pairs.world: world_nether (uses global ratio)
                 netherName = (String) value;
                 ratio = defaultRatio;
+                worldPairOffsetX.put(overworldName, 0.0);
+                worldPairOffsetZ.put(overworldName, 0.0);
             } else {
                 plugin.getLogger().warning("Invalid world pair configuration for: " + overworldName);
                 continue;
@@ -210,6 +222,54 @@ public class ConfigManager {
             plugin.saveConfig();
             this.config = plugin.getConfig();
         }
+    }
+    
+    /**
+     * Gets the X offset for a specific overworld.
+     * 
+     * @param overworldName The name of the overworld
+     * @return The X offset for this world pair, or 0 if not configured
+     */
+    public double getOffsetXForWorld(String overworldName) {
+        return worldPairOffsetX.getOrDefault(overworldName, 0.0);
+    }
+    
+    /**
+     * Gets the Z offset for a specific overworld.
+     * 
+     * @param overworldName The name of the overworld
+     * @return The Z offset for this world pair, or 0 if not configured
+     */
+    public double getOffsetZForWorld(String overworldName) {
+        return worldPairOffsetZ.getOrDefault(overworldName, 0.0);
+    }
+    
+    /**
+     * Gets the X offset for a world pair based on nether world name.
+     * 
+     * @param netherName The name of the nether world
+     * @return The X offset for this world pair, or 0 if not configured
+     */
+    public double getOffsetXForNetherWorld(String netherName) {
+        String overworldName = netherToOverworld.get(netherName);
+        if (overworldName == null) {
+            return 0.0;
+        }
+        return worldPairOffsetX.getOrDefault(overworldName, 0.0);
+    }
+    
+    /**
+     * Gets the Z offset for a world pair based on nether world name.
+     * 
+     * @param netherName The name of the nether world
+     * @return The Z offset for this world pair, or 0 if not configured
+     */
+    public double getOffsetZForNetherWorld(String netherName) {
+        String overworldName = netherToOverworld.get(netherName);
+        if (overworldName == null) {
+            return 0.0;
+        }
+        return worldPairOffsetZ.getOrDefault(overworldName, 0.0);
     }
     
     /**

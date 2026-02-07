@@ -35,5 +35,11 @@ world-pairs:
   # survival:
   #   nether: survival_nether
   #   ratio: 16
+  # Example with coordinate offsets:
+  # adventure:
+  #   nether: adventure_nether
+  #   ratio: 8
+  #   offset-x: 1000
+  #   offset-z: -500
   # Example with simple format:
   # creative: creative_nether

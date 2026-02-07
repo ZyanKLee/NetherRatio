@@ -114,8 +114,8 @@ public class PortalTravelListener implements Listener {
                 return null;
             }
             scale = cm.getRatioForWorld(fromWorld.getName());
-            newX = from.getX() / scale;
-            newZ = from.getZ() / scale;
+            newX = from.getX() / scale + cm.getOffsetXForWorld(fromWorld.getName());
+            newZ = from.getZ() / scale + cm.getOffsetZForWorld(fromWorld.getName());
         } else if (fromWorld.getEnvironment() == World.Environment.NETHER) {
             // When traveling from Nether to Overworld, multiply by ratio
             toWorld = cm.getLinkedOverworld(fromWorld.getName());
@@ -127,8 +127,8 @@ public class PortalTravelListener implements Listener {
                 return null;
             }
             scale = cm.getRatioForNetherWorld(fromWorld.getName());
-            newX = from.getX() * scale;
-            newZ = from.getZ() * scale;
+            newX = (from.getX() - cm.getOffsetXForNetherWorld(fromWorld.getName())) * scale;
+            newZ = (from.getZ() - cm.getOffsetZForNetherWorld(fromWorld.getName())) * scale;
         } else {
             // End or other dimensions - no portal conversion
             return null;
