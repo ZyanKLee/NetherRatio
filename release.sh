@@ -92,5 +92,10 @@ git push
 git push origin "$TAG_NAME"
 
 echo "🎉 Release process complete!"
-echo "GitHub Actions will now build and release version $TAG_NAME."
-echo "Check the status here: https://github.com/ZyanKLee/NetherRatio/actions"
+echo ""
+echo "Next steps:"
+echo "1. Go to GitHub releases: https://github.com/YOUR_USERNAME/NetherRatio/releases/new?tag=$TAG_NAME"
+echo "2. Create a new release from the tag"
+echo "3. The GitHub Actions workflow will automatically publish to Modrinth and Hangar!"
+echo ""
+echo "Or check workflow status: https://github.com/YOUR_USERNAME/NetherRatio/actions"
