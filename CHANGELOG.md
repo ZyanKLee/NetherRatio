@@ -4,9 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+
+- Add support for coordinate offsets in world pair configurations
+
 ### Changed
 
 - **release**: Update release process to generate and use release notes with git-cliff
+- **release**: Update changelog generation command in release script
 
 ## [2.2.3] - 2026-02-07
 

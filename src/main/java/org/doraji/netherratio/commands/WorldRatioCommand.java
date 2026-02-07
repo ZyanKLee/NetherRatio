@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  * @author xDxRAx (Original Author)
  * @author NetherRatio Team
  * @author ZyanKLee (Maintainer)
- * @version 2.2.3
+ * @version 2.3.0
  */
 public class WorldRatioCommand implements CommandExecutor {
 
