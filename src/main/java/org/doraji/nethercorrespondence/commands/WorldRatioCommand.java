@@ -49,77 +49,90 @@ public class WorldRatioCommand implements CommandExecutor {
         }
 
         if (args.length == 0) {
-            // Show all world pairs and their ratios
-            double defaultRatio = plugin.getConfigManager().getDefaultRatio();
-            sender.sendMessage(plugin.getMessagesManager().getMessage("command.default-ratio", "ratio", String.valueOf(defaultRatio)));
+            // Default: show all ratios (same as 'list')
+            return handleListCommand(sender);
+        }
+
+        String subcommand = args[0].toLowerCase();
+
+        switch (subcommand) {
+            case "list":
+                return handleListCommand(sender);
             
-            java.util.Set<String> worlds = plugin.getConfigManager().getOverworldNames();
-            if (!worlds.isEmpty()) {
-                sender.sendMessage(plugin.getMessagesManager().getMessage("command.world-ratios-header"));
-                for (String worldName : worlds) {
-                    double ratio = plugin.getConfigManager().getRatioForWorld(worldName);
-                    sender.sendMessage(plugin.getMessagesManager().getMessage("command.world-ratio-entry", 
-                        "world", worldName, 
-                        "ratio", String.valueOf(ratio)));
-                }
-            }
-            return true;
-
-        } else if (args.length == 1) {
-            // Check for calc subcommand (use player position)
-            if (args[0].equalsIgnoreCase("calc")) {
-                return handleCalcCommand(sender, null, null);
-            }
+            case "set":
+                return handleSetCommand(sender, args);
             
-            // Check for reload subcommand
-            if (args[0].equalsIgnoreCase("reload")) {
-                plugin.reloadConfig();
-                plugin.getConfigManager().reload();
-                plugin.getMessagesManager().reload();
-                sender.sendMessage(plugin.getMessagesManager().getMessage("command.config-reloaded"));
-                return true;
-            }
+            case "reload":
+                return handleReloadCommand(sender);
             
-            // Otherwise, treat as default ratio value
-            try {
-                double newRatio = Double.parseDouble(args[0]);
+            case "calc":
+                return handleCalcCommand(sender, args);
+            
+            default:
+                sender.sendMessage(plugin.getMessagesManager().getMessage("command.invalid-usage"));
+                return false;
+        }
+    }
 
-                // Validate ratio value
-                if (newRatio <= 0 || !Double.isFinite(newRatio)) {
-                    sender.sendMessage(plugin.getMessagesManager().getMessage("command.ratio-must-be-positive"));
-                    return false;
-                }
-                
-                if (newRatio > 1000) {
-                    sender.sendMessage(plugin.getMessagesManager().getMessage("command.ratio-too-large"));
-                    return false;
-                }
+    /**
+     * Handles the list subcommand to display all ratios.
+     * 
+     * @param sender The command sender
+     * @return true if the command was successful
+     */
+    private boolean handleListCommand(CommandSender sender) {
+        double defaultRatio = plugin.getConfigManager().getDefaultRatio();
+        sender.sendMessage(plugin.getMessagesManager().getMessage("command.default-ratio", "ratio", String.valueOf(defaultRatio)));
+        
+        java.util.Set<String> worlds = plugin.getConfigManager().getOverworldNames();
+        if (!worlds.isEmpty()) {
+            sender.sendMessage(plugin.getMessagesManager().getMessage("command.world-ratios-header"));
+            for (String worldName : worlds) {
+                double ratio = plugin.getConfigManager().getRatioForWorld(worldName);
+                java.util.Map<String, String> replacements = new java.util.HashMap<>();
+                replacements.put("world", worldName);
+                replacements.put("ratio", String.valueOf(ratio));
+                sender.sendMessage(plugin.getMessagesManager().getMessage("command.world-ratio-entry", replacements));
+            }
+        }
+        return true;
+    }
 
-                plugin.getConfigManager().setDefaultRatio(newRatio);
+    /**
+     * Handles the set subcommand to set ratios.
+     * 
+     * @param sender The command sender
+     * @param args The command arguments
+     * @return true if the command was successful
+     */
+    private boolean handleSetCommand(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage(plugin.getMessagesManager().getMessage("command.set-usage"));
+            return false;
+        }
 
-                sender.sendMessage(plugin.getMessagesManager().getMessage("command.default-ratio-updated", "ratio", String.valueOf(newRatio)));
-                return true;
+        try {
+            double newRatio = Double.parseDouble(args[1]);
 
-            } catch (NumberFormatException e) {
-                sender.sendMessage(plugin.getMessagesManager().getMessage("command.invalid-number"));
+            // Validate ratio value
+            if (newRatio <= 0 || !Double.isFinite(newRatio)) {
+                sender.sendMessage(plugin.getMessagesManager().getMessage("command.ratio-must-be-positive"));
                 return false;
             }
-        } else if (args.length == 2) {
-            // Set ratio for specific world: /netherratio <ratio> <world>
-            try {
-                double newRatio = Double.parseDouble(args[0]);
-                String worldName = args[1];
+            
+            if (newRatio > 1000) {
+                sender.sendMessage(plugin.getMessagesManager().getMessage("command.ratio-too-large"));
+                return false;
+            }
 
-                // Validate ratio value
-                if (newRatio <= 0 || !Double.isFinite(newRatio)) {
-                    sender.sendMessage(plugin.getMessagesManager().getMessage("command.ratio-must-be-positive"));
-                    return false;
-                }
-                
-                if (newRatio > 1000) {
-                    sender.sendMessage(plugin.getMessagesManager().getMessage("command.ratio-too-large"));
-                    return false;
-                }
+            if (args.length == 2) {
+                // Set default ratio: /netherratio set <ratio>
+                plugin.getConfigManager().setDefaultRatio(newRatio);
+                sender.sendMessage(plugin.getMessagesManager().getMessage("command.default-ratio-updated", "ratio", String.valueOf(newRatio)));
+                return true;
+            } else {
+                // Set world-specific ratio: /netherratio set <ratio> <world>
+                String worldName = args[2];
 
                 // Check if world exists in config
                 if (!plugin.getConfigManager().getOverworldNames().contains(worldName)) {
@@ -128,33 +141,41 @@ public class WorldRatioCommand implements CommandExecutor {
                 }
 
                 plugin.getConfigManager().setRatioForWorld(worldName, newRatio);
-                sender.sendMessage(plugin.getMessagesManager().getMessage("command.world-ratio-updated", 
-                    "world", worldName,
-                    "ratio", String.valueOf(newRatio)));
+                java.util.Map<String, String> replacements = new java.util.HashMap<>();
+                replacements.put("world", worldName);
+                replacements.put("ratio", String.valueOf(newRatio));
+                sender.sendMessage(plugin.getMessagesManager().getMessage("command.world-ratio-updated", replacements));
                 return true;
-
-            } catch (NumberFormatException e) {
-                sender.sendMessage(plugin.getMessagesManager().getMessage("command.invalid-number"));
-                return false;
             }
-        } else if (args.length == 3 && args[0].equalsIgnoreCase("calc")) {
-            // calc subcommand with coordinates
-            return handleCalcCommand(sender, args[1], args[2]);
-        } else {
-            sender.sendMessage(plugin.getMessagesManager().getMessage("command.invalid-usage"));
+
+        } catch (NumberFormatException e) {
+            sender.sendMessage(plugin.getMessagesManager().getMessage("command.invalid-number"));
             return false;
         }
+    }
+
+    /**
+     * Handles the reload subcommand.
+     * 
+     * @param sender The command sender
+     * @return true if the command was successful
+     */
+    private boolean handleReloadCommand(CommandSender sender) {
+        plugin.reloadConfig();
+        plugin.getConfigManager().reload();
+        plugin.getMessagesManager().reload();
+        sender.sendMessage(plugin.getMessagesManager().getMessage("command.config-reloaded"));
+        return true;
     }
 
     /**
      * Handles the calc subcommand to calculate portal coordinates.
      * 
      * @param sender The command sender
-     * @param xArg The X coordinate argument (null to use player position)
-     * @param zArg The Z coordinate argument (null to use player position)
+     * @param args The command arguments (includes 'calc' as first element)
      * @return true if the command was successful
      */
-    private boolean handleCalcCommand(CommandSender sender, String xArg, String zArg) {
+    private boolean handleCalcCommand(CommandSender sender, String[] args) {
         // Check permission
         if (!sender.hasPermission("nethercorrespondence.calc")) {
             sender.sendMessage(plugin.getMessagesManager().getMessage("command.no-permission"));
@@ -170,8 +191,8 @@ public class WorldRatioCommand implements CommandExecutor {
         double x, z;
         String worldName;
 
-        if (xArg == null || zArg == null) {
-            // Use player position
+        if (args.length == 1) {
+            // Use player position: /netherratio calc
             if (player == null) {
                 sender.sendMessage(plugin.getMessagesManager().getMessage("command.calc-console-needs-coords"));
                 return false;
@@ -179,20 +200,23 @@ public class WorldRatioCommand implements CommandExecutor {
             x = player.getLocation().getBlockX();
             z = player.getLocation().getBlockZ();
             worldName = player.getWorld().getName();
-        } else {
-            // Parse provided coordinates
+        } else if (args.length == 3) {
+            // Parse provided coordinates: /netherratio calc <x> <z>
             if (player == null) {
                 sender.sendMessage(plugin.getMessagesManager().getMessage("command.calc-console-needs-world"));
                 return false;
             }
             try {
-                x = Double.parseDouble(xArg);
-                z = Double.parseDouble(zArg);
+                x = Double.parseDouble(args[1]);
+                z = Double.parseDouble(args[2]);
                 worldName = player.getWorld().getName();
             } catch (NumberFormatException e) {
                 sender.sendMessage(plugin.getMessagesManager().getMessage("command.calc-invalid-coords"));
                 return false;
             }
+        } else {
+            sender.sendMessage(plugin.getMessagesManager().getMessage("command.calc-usage"));
+            return false;
         }
 
         // Get the world and calculate
@@ -217,13 +241,14 @@ public class WorldRatioCommand implements CommandExecutor {
             targetWorldName = netherWorld.getName();
             targetX = x / ratio;
             targetZ = z / ratio;
-            sender.sendMessage(plugin.getMessagesManager().getMessage("command.calc-result-to-nether",
-                "x1", String.format("%.1f", x),
-                "z1", String.format("%.1f", z),
-                "world1", worldName,
-                "x2", String.format("%.1f", targetX),
-                "z2", String.format("%.1f", targetZ),
-                "world2", targetWorldName));
+            java.util.Map<String, String> replacements = new java.util.HashMap<>();
+            replacements.put("x1", String.format("%.1f", x));
+            replacements.put("z1", String.format("%.1f", z));
+            replacements.put("world1", worldName);
+            replacements.put("x2", String.format("%.1f", targetX));
+            replacements.put("z2", String.format("%.1f", targetZ));
+            replacements.put("world2", targetWorldName);
+            sender.sendMessage(plugin.getMessagesManager().getMessage("command.calc-result-to-nether", replacements));
         } else if (world.getEnvironment() == org.bukkit.World.Environment.NETHER) {
             // Nether to Overworld
             org.bukkit.World overworldWorld = plugin.getConfigManager().getLinkedOverworld(worldName);
@@ -235,13 +260,14 @@ public class WorldRatioCommand implements CommandExecutor {
             targetWorldName = overworldWorld.getName();
             targetX = x * ratio;
             targetZ = z * ratio;
-            sender.sendMessage(plugin.getMessagesManager().getMessage("command.calc-result-to-overworld",
-                "x1", String.format("%.1f", x),
-                "z1", String.format("%.1f", z),
-                "world1", worldName,
-                "x2", String.format("%.1f", targetX),
-                "z2", String.format("%.1f", targetZ),
-                "world2", targetWorldName));
+            java.util.Map<String, String> replacements = new java.util.HashMap<>();
+            replacements.put("x1", String.format("%.1f", x));
+            replacements.put("z1", String.format("%.1f", z));
+            replacements.put("world1", worldName);
+            replacements.put("x2", String.format("%.1f", targetX));
+            replacements.put("z2", String.format("%.1f", targetZ));
+            replacements.put("world2", targetWorldName);
+            sender.sendMessage(plugin.getMessagesManager().getMessage("command.calc-result-to-overworld", replacements));
         } else {
             sender.sendMessage(plugin.getMessagesManager().getMessage("command.calc-wrong-dimension"));
             return false;
