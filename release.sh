@@ -79,9 +79,20 @@ find "$JAVA_SOURCE_DIR" -type f -name "*.java" -exec sed -i.bak "s/@version .*/@
 find "$JAVA_SOURCE_DIR" -type f -name "*.java.bak" -delete
 echo "Updated @version tags in all .java files."
 
+# --- Update CHANGELOG.md ---
+echo "📝 Updating CHANGELOG.md..."
+if command -v git-cliff &> /dev/null; then
+    # Generate changelog for the new version
+    git-cliff --tag "$TAG_NAME" --unreleased --prepend CHANGELOG.md
+    echo "Updated CHANGELOG.md with changes for $TAG_NAME."
+else
+    echo "⚠️  Warning: git-cliff not found. Skipping CHANGELOG.md update."
+    echo "   Install git-cliff: https://github.com/orhun/git-cliff"
+fi
+
 # --- Git Operations ---
 echo "💾 Committing version changes..."
-git add "$POM_FILE" "$PLUGIN_YML" "$README_FILE" "$JAVA_SOURCE_DIR"
+git add "$POM_FILE" "$PLUGIN_YML" "$README_FILE" "$JAVA_SOURCE_DIR" "CHANGELOG.md"
 git commit -m "chore: Release $TAG_NAME"
 
 echo "🏷️  Tagging new version..."

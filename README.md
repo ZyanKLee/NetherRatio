@@ -9,6 +9,7 @@ A Paper/Spigot plugin that allows you to customize the Nether-to-Overworld coord
 
 - 🎯 **Per-World Ratios**: Set different ratios for each world pair
 - 🧮 **Coordinate Calculator**: Calculate portal coordinates without building portals
+- 🛡️ **Coordinate Bounds**: Prevent teleportation into ungenerated chunks or beyond world borders
 - 🌍 **Multi-World Support**: Configure different world pairs for complex server setups
 - 🌐 **Internationalization**: Built-in support for English, German, French, Italian, and Korean
 - ⚡ **Performance Optimized**: Lightweight with minimal server impact
@@ -44,6 +45,17 @@ language: en
 # For vanilla Minecraft behavior, set to 8
 value: 8
 
+# Coordinate bounds - Prevent players from being teleported outside safe areas
+# This helps avoid teleportation into ungenerated chunks or beyond world borders
+coordinate-bounds:
+  enabled: false
+  # Minecraft's world border default is ±29,999,984 blocks
+  # These values apply to the destination coordinates (after ratio calculation)
+  min-x: -29999968
+  max-x: 29999968
+  min-z: -29999968
+  max-z: 29999968
+
 # World pairs for portal travel
 # Define which overworld connects to which nether world
 #
@@ -72,7 +84,39 @@ world-pairs:
 |--------|------|---------|-------------|
 | `language` | String | `en` | Language for in-game messages (en, de, fr, it, ko) |
 | `value` | Double | `8` | Default coordinate conversion ratio (Overworld blocks : 1 Nether block) |
+| `coordinate-bounds` | Section | See below | Safe coordinate limits to prevent teleportation into ungenerated areas |
 | `world-pairs` | Map | See below | Mapping of Overworld worlds to their corresponding Nether worlds |
+
+#### Coordinate Bounds Configuration
+
+Coordinate bounds help prevent players from being teleported into ungenerated chunks or beyond world borders when using portals. This is especially useful for servers with custom world sizes or pre-generated regions.
+
+**Configuration Options:**
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `enabled` | Boolean | `false` | Enable or disable coordinate bounds checking |
+| `min-x` | Integer | `-29999968` | Minimum X coordinate for portal destinations |
+| `max-x` | Integer | `29999968` | Maximum X coordinate for portal destinations |
+| `min-z` | Integer | `-29999968` | Minimum Z coordinate for portal destinations |
+| `max-z` | Integer | `29999968` | Maximum Z coordinate for portal destinations |
+
+**How it works:**
+- When enabled, portal destinations are checked against these bounds
+- If a destination exceeds the bounds, coordinates are automatically clamped to the nearest safe position
+- Bounds apply to the **destination** coordinates (after ratio calculation)
+- Useful for servers with smaller world borders or pre-generated areas
+
+**Example:**
+```yaml
+coordinate-bounds:
+  enabled: true
+  min-x: -10000
+  max-x: 10000
+  min-z: -10000
+  max-z: 10000
+```
+With this configuration, no portal will teleport a player beyond ±10,000 blocks in the destination world.
 
 #### World Pairs Configuration
 
@@ -227,6 +271,11 @@ When a player or entity travels through a Nether portal:
 
 2. **Nether → Overworld**: Coordinates are **multiplied** by the ratio
    - Example with 8:1 ratio: `X=100, Z=75` → `X=800, Z=600`
+
+3. **Coordinate Bounds** (if enabled): Destination coordinates are checked and clamped
+   - Prevents teleportation into ungenerated chunks
+   - Keeps players within safe, pre-generated areas
+   - Example: If max-x is 10000 and calculated X is 12000, player spawns at X=10000
 
 ### World Mapping
 

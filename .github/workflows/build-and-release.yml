@@ -49,6 +49,7 @@ jobs:
           version-type: release
           
           loaders: |
+            fabric
             paper
             spigot
             purpur
@@ -68,34 +69,29 @@ jobs:
             1.21.11
           
           changelog-file: CHANGELOG.md
-          
+          java: |
+            21
+      
       - name: Publish to Hangar
-        uses: Kir-Antipov/mc-publish@v3.3
-        with:
-          hangar-id: ${{ secrets.HANGAR_PROJECT_SLUG }}
-          hangar-token: ${{ secrets.HANGAR_TOKEN }}
+        env:
+          HANGAR_TOKEN: ${{ secrets.HANGAR_TOKEN }}
+          VERSION: ${{ steps.version.outputs.VERSION }}
+        run: |
+          # Upload to Hangar using their API
+          # Documentation: https://hangar.papermc.io/api-docs
           
-          files: target/NetherRatio-*.jar
-          name: NetherRatio ${{ steps.version.outputs.VERSION }}
-          version: ${{ steps.version.outputs.VERSION }}
-          version-type: Release
+          HANGAR_SLUG="${{ secrets.HANGAR_PROJECT_SLUG }}"
+          JAR_FILE=$(ls target/NetherRatio-*.jar)
           
-          loaders: |
-            paper
-            spigot
+          # Read changelog
+          CHANGELOG=$(cat CHANGELOG.md | head -n 50)
           
-          game-versions: |
-            1.21
-            1.21.1
-            1.21.2
-            1.21.3
-            1.21.4
-            1.21.5
-            1.21.6
-            1.21.7
-            1.21.8
-            1.21.9
-            1.21.10
-            1.21.11
-          
-          changelog-file: CHANGELOG.md
+          # Create version on Hangar
+          curl -X POST "https://hangar.papermc.io/api/v1/projects/${HANGAR_SLUG}/versions" \
+            -H "Authorization: ${HANGAR_TOKEN}" \
+            -H "Content-Type: multipart/form-data" \
+            -F "version-string=${VERSION}" \
+            -F "channel=Release" \
+            -F "platformVersions={\"PAPER\": [\"1.21\", \"1.21.1\", \"1.21.2\", \"1.21.3\", \"1.21.4\", \"1.21.5\", \"1.21.6\", \"1.21.7\", \"1.21.8\", \"1.21.9\", \"1.21.10\", \"1.21.11\"]}" \
+            -F "plugin-dependencies={}" \
+            -F "files=@${JAR_FILE}"
