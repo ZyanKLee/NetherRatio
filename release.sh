@@ -83,7 +83,7 @@ echo "Updated @version tags in all .java files."
 echo "📝 Updating CHANGELOG.md..."
 if command -v git-cliff &> /dev/null; then
     # Generate changelog for the new version
-    git-cliff --tag "$TAG_NAME" --unreleased --prepend CHANGELOG.md
+    git-cliff --output CHANGELOG.md
     echo "Updated CHANGELOG.md with changes for $TAG_NAME."
 else
     echo "⚠️  Warning: git-cliff not found. Skipping CHANGELOG.md update."

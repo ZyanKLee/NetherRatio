@@ -2,17 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+
+- **release**: Update release process to generate and use release notes with git-cliff
+
 ## [2.2.3] - 2026-02-07
 
 ### Changed
 
 - **release**: Update changelog template to correctly format unreleased changes
-
-### Fixed
-
-- Correct authorization header format for Hangar API
-
-## [Unreleased]
+- Release v2.2.3
 
 ### Fixed
 
@@ -117,3 +118,5 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Release v2.0.0
+
+
