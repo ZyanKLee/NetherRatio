@@ -53,7 +53,7 @@ jobs:
           
           # Create version on Hangar
           curl -X POST "https://hangar.papermc.io/api/v1/projects/${HANGAR_SLUG}/versions" \
-            -H "Authorization: ${HANGAR_TOKEN}" \
+            -H "Authorization: Bearer ${HANGAR_TOKEN}" \
             -H "Content-Type: multipart/form-data" \
             -F "version-string=${VERSION}" \
             -F "channel=Release" \
