@@ -27,13 +27,14 @@ Your GitHub Actions workflow for automated publishing has been created!
 2. Add these secrets:
    - `MODRINTH_TOKEN`: Your Modrinth personal access token
    - `HANGAR_TOKEN`: Your Hangar API key
+   - `MODRINTH_PROJECT_ID`: Your Modrinth project ID
+   - `HANGAR_PROJECT_SLUG`: Your Hangar project slug (e.g., `username/NetherRatio`)
 
-### 4. Update Workflow File
+### 4. Add Project IDs to GitHub Secrets
 
-Edit [.github/workflows/publish.yml](.github/workflows/publish.yml) and replace:
-- `YOUR_MODRINTH_PROJECT_ID` with your actual Modrinth project ID (found in project settings)
-- `YOUR_HANGAR_PROJECT_SLUG` with your Hangar project slug (e.g., `username/NetherRatio`)
-- `YOUR_USERNAME` in the workflow file comments
+In addition to the API tokens, add these secrets:
+- `MODRINTH_PROJECT_ID`: Your Modrinth project ID (found in project settings)
+- `HANGAR_PROJECT_SLUG`: Your Hangar project slug (e.g., `username/NetherRatio`)
 
 ### 5. Release Process
 
@@ -41,18 +42,17 @@ When you're ready to publish a new version:
 
 ```bash
 # Update version and push tag
-./release.sh 2.1.1
-
-# Then create a GitHub release
-# Go to: https://github.com/YOUR_USERNAME/NetherRatio/releases/new?tag=v2.1.1
-# Click "Create release from tag"
+./release.sh 2.1.2
 ```
 
 The workflow will automatically:
 - Build the plugin with Maven
+- Create a GitHub release with the JAR file
 - Upload to Modrinth
 - Upload to Hangar
 - Include the changelog from CHANGELOG.md
+
+No need to manually create a GitHub release - just push the tag!
 
 ### Supported Versions
 
@@ -63,13 +63,15 @@ The workflow is configured to mark the plugin as compatible with:
 
 ## Manual Publishing
 
-You can also trigger the workflow manually from GitHub Actions:
-1. Go to Actions → Publish to Modrinth and Hangar
-2. Click "Run workflow"
-3. Enter the version number
+You can also trigger the workflow manually by pushing a tag:
+
+```bash
+git tag v2.1.3
+git push origin v2.1.3
+```
 
 ## Important Files
 
-- [.github/workflows/publish.yml](.github/workflows/publish.yml) - GitHub Actions workflow
-- [CHANGELOG.md](CHANGELOG.md) - Keep this updated for each release
+- [.github/workflows/build-and-release.yml](.github/workflows/build-and-release.yml) - Unified workflow for GitHub, Modrinth, and Hangar
+- [CHANGELOG.md](CHANGELOG.md) - Keep this updated for each release (used as release notes)
 - [release.sh](release.sh) - Automated version bumping and tagging script
