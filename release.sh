@@ -50,7 +50,7 @@ echo "✅ No unstaged changes found."
 echo "🔧 Updating version in $POM_FILE..."
 # Use awk to only replace the project version (first <version> after <artifactId>)
 awk -v new_version="$NEW_VERSION" '
-    /<artifactId>Nethercorrespondence<\/artifactId>/ { found=1 }
+    /<artifactId>NetherRatio<\/artifactId>/ { found=1 }
     found && /<version>/ && !replaced { 
         sub(/<version>.*<\/version>/, "<version>" new_version "</version>")
         replaced=1

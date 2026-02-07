@@ -1,4 +1,4 @@
-package org.doraji.nethercorrespondence;
+package org.doraji.netherratio;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,11 +20,11 @@ import java.util.Map;
  */
 public class MessagesManager {
     
-    private final Nethercorrespondence plugin;
+    private final NetherRatio plugin;
     private FileConfiguration messages;
     private String currentLanguage;
     
-    public MessagesManager(Nethercorrespondence plugin) {
+    public MessagesManager(NetherRatio plugin) {
         this.plugin = plugin;
         this.currentLanguage = plugin.getConfig().getString("language", "en");
         loadMessages();

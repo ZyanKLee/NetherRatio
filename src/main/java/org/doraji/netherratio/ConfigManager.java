@@ -1,4 +1,4 @@
-package org.doraji.nethercorrespondence;
+package org.doraji.netherratio;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
@@ -21,7 +21,7 @@ import java.util.Map;
  */
 public class ConfigManager {
 
-    private final Nethercorrespondence plugin;
+    private final NetherRatio plugin;
     private FileConfiguration config;
     public static final String RATIO_VALUE = "value";
     public static final String WORLD_PAIRS = "world-pairs";
@@ -36,7 +36,7 @@ public class ConfigManager {
      * 
      * @param plugin The main plugin instance
      */
-    public ConfigManager(Nethercorrespondence plugin) {
+    public ConfigManager(NetherRatio plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfig();
         this.overworldToNether = new HashMap<>();

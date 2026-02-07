@@ -1,10 +1,10 @@
-package org.doraji.nethercorrespondence.commands;
+package org.doraji.netherratio.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.doraji.nethercorrespondence.Nethercorrespondence;
+import org.doraji.netherratio.NetherRatio;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -20,14 +20,14 @@ import org.jetbrains.annotations.NotNull;
  */
 public class WorldRatioCommand implements CommandExecutor {
 
-    private final Nethercorrespondence plugin;
+    private final NetherRatio plugin;
 
     /**
      * Constructs a new WorldRatioCommand.
      * 
      * @param plugin The main plugin instance
      */
-    public WorldRatioCommand(Nethercorrespondence plugin) {
+    public WorldRatioCommand(NetherRatio plugin) {
         this.plugin = plugin;
     }
 
@@ -43,7 +43,7 @@ public class WorldRatioCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if (!sender.hasPermission("nethercorrespondence.netherratio")) {
+        if (!sender.hasPermission("netherratio.netherratio")) {
             sender.sendMessage(plugin.getMessagesManager().getMessage("command.no-permission"));
             return true;
         }
@@ -177,7 +177,7 @@ public class WorldRatioCommand implements CommandExecutor {
      */
     private boolean handleCalcCommand(CommandSender sender, String[] args) {
         // Check permission
-        if (!sender.hasPermission("nethercorrespondence.calc")) {
+        if (!sender.hasPermission("netherratio.calc")) {
             sender.sendMessage(plugin.getMessagesManager().getMessage("command.no-permission"));
             return true;
         }

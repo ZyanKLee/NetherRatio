@@ -89,38 +89,38 @@ world-pairs:
 ### `/netherratio`
 Display the current coordinate ratio.
 
-**Permission**: `nethercorrespondence.netherratio`  
+**Permission**: `netherratio.netherratio`  
 **Usage**: `/netherratio`
 
 ### `/netherratio <ratio>`
 Set a new coordinate ratio.
 
-**Permission**: `nethercorrespondence.netherratio`  
+**Permission**: `netherratio.netherratio`  
 **Usage**: `/netherratio 8`  
 **Example**: `/netherratio 16` - Sets a 16:1 ratio
 
 ### `/netherratio reload`
 Reload the plugin configuration.
 
-**Permission**: `nethercorrespondence.netherratio`  
+**Permission**: `netherratio.netherratio`  
 **Usage**: `/netherratio reload`
 
 ## 🔐 Permissions
 
 | Permission | Description | Default |
 |------------|-------------|---------|
-| `nethercorrespondence.netherratio` | Allows using all `/netherratio` commands | OP only |
+| `netherratio.netherratio` | Allows using all `/netherratio` commands | OP only |
 
 ### Permission Examples
 
 **LuckPerms**:
 ```
-/lp group admin permission set nethercorrespondence.netherratio true
+/lp group admin permission set netherratio.netherratio true
 ```
 
 **PermissionsEx**:
 ```
-/pex group admin add nethercorrespondence.netherratio
+/pex group admin add netherratio.netherratio
 ```
 
 ## 🌐 Supported Languages
@@ -200,7 +200,7 @@ The built plugin will be available at `target/NetherRatio-2.0.2.jar`
 
 ### Permission errors
 
-- Verify the permission is correctly set: `nethercorrespondence.netherratio`
+- Verify the permission is correctly set: `netherratio.netherratio`
 - Check your permission plugin's configuration
 - Ensure OPs have permissions if using the default setup
 

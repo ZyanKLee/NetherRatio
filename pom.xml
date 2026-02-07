@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.doraji</groupId>
-    <artifactId>Nethercorrespondence</artifactId>
+    <artifactId>NetherRatio</artifactId>
     <version>2.0.2</version>
     <packaging>jar</packaging>
 
-    <name>Nethercorrespondence</name>
+    <name>NetherRatio</name>
 
     <developers>
         <developer>

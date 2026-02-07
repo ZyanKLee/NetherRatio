@@ -1,7 +1,7 @@
-package org.doraji.nethercorrespondence.events;
+package org.doraji.netherratio.events;
 
-import org.doraji.nethercorrespondence.Nethercorrespondence;
-import org.doraji.nethercorrespondence.ConfigManager;
+import org.doraji.netherratio.NetherRatio;
+import org.doraji.netherratio.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -26,7 +26,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
  */
 public class PortalTravelListener implements Listener {
 
-    private final Nethercorrespondence plugin;
+    private final NetherRatio plugin;
     private final ConfigManager cm;
 
     /**
@@ -34,7 +34,7 @@ public class PortalTravelListener implements Listener {
      * 
      * @param plugin The main plugin instance
      */
-    public PortalTravelListener(Nethercorrespondence plugin) {
+    public PortalTravelListener(NetherRatio plugin) {
         this.plugin = plugin;
         this.cm = plugin.getConfigManager();
     }

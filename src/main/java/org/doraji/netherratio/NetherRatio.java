@@ -1,8 +1,8 @@
-package org.doraji.nethercorrespondence;
+package org.doraji.netherratio;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import org.doraji.nethercorrespondence.events.PortalTravelListener;
-import org.doraji.nethercorrespondence.commands.WorldRatioCommand;
+import org.doraji.netherratio.events.PortalTravelListener;
+import org.doraji.netherratio.commands.WorldRatioCommand;
 
 /**
  * NetherRatio Plugin - Customizable Nether-to-Overworld coordinate ratio for portal travel.
@@ -16,7 +16,7 @@ import org.doraji.nethercorrespondence.commands.WorldRatioCommand;
  * @author ZyanKLee (Maintainer)
  * @version 2.0.2
  */
-public final class Nethercorrespondence extends JavaPlugin {
+public final class NetherRatio extends JavaPlugin {
 
     private ConfigManager configManager;
     private MessagesManager messagesManager;
