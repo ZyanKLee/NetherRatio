@@ -28,6 +28,8 @@ public class ConfigManager {
     
     private Map<String, String> overworldToNether;
     private Map<String, String> netherToOverworld;
+    private Map<String, Double> worldPairRatios;
+    private double defaultRatio;
 
     /**
      * Constructs a new ConfigManager.
@@ -39,6 +41,7 @@ public class ConfigManager {
         this.config = plugin.getConfig();
         this.overworldToNether = new HashMap<>();
         this.netherToOverworld = new HashMap<>();
+        this.worldPairRatios = new HashMap<>();
         loadDefaultSettings();
         loadWorldPairs();
     }
@@ -54,10 +57,15 @@ public class ConfigManager {
     
     /**
      * Loads world pairs from configuration and builds bidirectional mapping.
+     * Also loads per-world ratios with backward compatibility for global ratio.
      */
     private void loadWorldPairs() {
         overworldToNether.clear();
         netherToOverworld.clear();
+        worldPairRatios.clear();
+        
+        // Load default/global ratio
+        defaultRatio = config.getDouble(RATIO_VALUE, 8.0);
         
         ConfigurationSection worldPairs = config.getConfigurationSection(WORLD_PAIRS);
         if (worldPairs == null) {
@@ -65,14 +73,34 @@ public class ConfigManager {
             plugin.getLogger().warning(plugin.getMessagesManager().getMessage("config.no-world-pairs"));
             overworldToNether.put("world", "world_nether");
             netherToOverworld.put("world_nether", "world");
+            worldPairRatios.put("world", defaultRatio);
             return;
         }
         
         for (String overworldName : worldPairs.getKeys(false)) {
-            String netherName = worldPairs.getString(overworldName);
+            Object value = worldPairs.get(overworldName);
+            String netherName;
+            double ratio;
+            
+            if (value instanceof ConfigurationSection) {
+                // New format: world-pairs.world.nether and world-pairs.world.ratio
+                ConfigurationSection pairConfig = (ConfigurationSection) value;
+                netherName = pairConfig.getString("nether");
+                ratio = pairConfig.getDouble("ratio", defaultRatio);
+            } else if (value instanceof String) {
+                // Old format: world-pairs.world: world_nether (uses global ratio)
+                netherName = (String) value;
+                ratio = defaultRatio;
+            } else {
+                plugin.getLogger().warning("Invalid world pair configuration for: " + overworldName);
+                continue;
+            }
+            
             if (netherName != null && !netherName.isEmpty()) {
                 overworldToNether.put(overworldName, netherName);
                 netherToOverworld.put(netherName, overworldName);
+                worldPairRatios.put(overworldName, ratio);
+                
                 Map<String, String> replacements = new HashMap<>();
                 replacements.put("overworld", overworldName);
                 replacements.put("nether", netherName);
@@ -107,6 +135,79 @@ public class ConfigManager {
             return null;
         }
         return Bukkit.getWorld(overworldName);
+    }
+    
+    /**
+     * Gets the ratio for a specific overworld.
+     * 
+     * @param overworldName The name of the overworld
+     * @return The ratio for this world pair, or the default ratio if not configured
+     */
+    public double getRatioForWorld(String overworldName) {
+        return worldPairRatios.getOrDefault(overworldName, defaultRatio);
+    }
+    
+    /**
+     * Gets the ratio for a world pair based on nether world name.
+     * 
+     * @param netherName The name of the nether world
+     * @return The ratio for this world pair, or the default ratio if not configured
+     */
+    public double getRatioForNetherWorld(String netherName) {
+        String overworldName = netherToOverworld.get(netherName);
+        if (overworldName == null) {
+            return defaultRatio;
+        }
+        return worldPairRatios.getOrDefault(overworldName, defaultRatio);
+    }
+    
+    /**
+     * Sets the ratio for a specific world pair.
+     * 
+     * @param overworldName The overworld name
+     * @param ratio The ratio to set
+     */
+    public void setRatioForWorld(String overworldName, double ratio) {
+        worldPairRatios.put(overworldName, ratio);
+        
+        // Update config structure
+        String netherName = overworldToNether.get(overworldName);
+        if (netherName != null) {
+            config.set(WORLD_PAIRS + "." + overworldName + ".nether", netherName);
+            config.set(WORLD_PAIRS + "." + overworldName + ".ratio", ratio);
+            plugin.saveConfig();
+            this.config = plugin.getConfig();
+        }
+    }
+    
+    /**
+     * Gets all configured overworld names.
+     * 
+     * @return Set of overworld names
+     */
+    public java.util.Set<String> getOverworldNames() {
+        return overworldToNether.keySet();
+    }
+    
+    /**
+     * Gets the default ratio.
+     * 
+     * @return The default ratio value
+     */
+    public double getDefaultRatio() {
+        return defaultRatio;
+    }
+    
+    /**
+     * Sets the default ratio.
+     * 
+     * @param ratio The default ratio to set
+     */
+    public void setDefaultRatio(double ratio) {
+        this.defaultRatio = ratio;
+        config.set(RATIO_VALUE, ratio);
+        plugin.saveConfig();
+        this.config = plugin.getConfig();
     }
     
     /**

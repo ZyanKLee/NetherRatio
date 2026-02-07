@@ -4,11 +4,14 @@ main: org.doraji.nethercorrespondence.Nethercorrespondence
 api-version: '1.21'
 commands:
   netherratio:
-    description: Sets the nether-overworld ratio.
-    usage: /netherratio [<ratio>]
+    description: Sets the nether-overworld ratio or calculates portal coordinates.
+    usage: /netherratio [<ratio>|calc [x z]|reload]
     permission: nethercorrespondence.netherratio
 
 permissions:
   nethercorrespondence.netherratio:
     description: Allows changing the nether-overworld ratio
     default: op
+  nethercorrespondence.calc:
+    description: Allows using the portal coordinate calculator
+    default: true

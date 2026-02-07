@@ -1,14 +1,28 @@
 # Language for messages (available: en, de, fr, it, ko)
 language: en
 
+# Default ratio for world pairs that don't have a specific ratio configured
 # Overworld value : Nether 1
 # For vanilla Minecraft behavior, set to 8
 value: 8
 
 # World pairs for portal travel
 # Define which overworld connects to which nether world
-# Format: 'overworld_name: nether_name'
+#
+# Simple format (uses default ratio):
+#   overworld_name: nether_name
+#
+# Advanced format (per-world ratio):
+#   overworld_name:
+#     nether: nether_name
+#     ratio: 16
+#
+# Examples:
 world-pairs:
   world: world_nether
-  # Add more world pairs as needed
-  # world2: world2_nether
+  # Example with custom ratio:
+  # survival:
+  #   nether: survival_nether
+  #   ratio: 16
+  # Example with simple format:
+  # creative: creative_nether

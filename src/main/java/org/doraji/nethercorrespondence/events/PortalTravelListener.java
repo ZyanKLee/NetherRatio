@@ -91,7 +91,6 @@ public class PortalTravelListener implements Listener {
      * @return The calculated destination location, or null if destination cannot be determined
      */
     private Location calculatePortalDestination(Location from) {
-        double scale = cm.getDouble(ConfigManager.RATIO_VALUE);
         World fromWorld = from.getWorld();
         if (fromWorld == null) {
             plugin.getLogger().warning("Cannot calculate portal destination: source world is null");
@@ -101,6 +100,7 @@ public class PortalTravelListener implements Listener {
         World toWorld;
         double newX;
         double newZ;
+        double scale;
 
         if (fromWorld.getEnvironment() == World.Environment.NORMAL) {
             // When traveling from Overworld to Nether, divide by ratio
@@ -113,6 +113,7 @@ public class PortalTravelListener implements Listener {
                 );
                 return null;
             }
+            scale = cm.getRatioForWorld(fromWorld.getName());
             newX = from.getX() / scale;
             newZ = from.getZ() / scale;
         } else if (fromWorld.getEnvironment() == World.Environment.NETHER) {
@@ -125,6 +126,7 @@ public class PortalTravelListener implements Listener {
                 );
                 return null;
             }
+            scale = cm.getRatioForNetherWorld(fromWorld.getName());
             newX = from.getX() * scale;
             newZ = from.getZ() * scale;
         } else {
