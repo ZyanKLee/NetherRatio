@@ -50,7 +50,7 @@ jobs:
 
       - name: Publish to Hangar
         env:
-          HANGAR_TOKEN: ${{ secrets.HANGAR_TOKEN }}
+          HANGAR_API_KEY: ${{ secrets.HANGAR_TOKEN }}
           VERSION: ${{ steps.version.outputs.VERSION }}
         run: |
           # Upload to Hangar using their API
@@ -59,18 +59,62 @@ jobs:
           HANGAR_SLUG="${{ secrets.HANGAR_PROJECT_SLUG }}"
           JAR_FILE=$(ls target/NetherRatio-*.jar)
           
-          # Use the release notes generated earlier
-          CHANGELOG=$(cat RELEASE_NOTES.md)
+          # Step 1: Authenticate with API key to get JWT
+          echo "Authenticating with Hangar..."
+          AUTH_RESPONSE=$(curl -s -X POST "https://hangar.papermc.io/api/v1/authenticate?apiKey=${HANGAR_API_KEY}" \
+            -H "User-Agent: NetherRatio-CI/1.0")
           
-          # Create version on Hangar
-          curl -X POST "https://hangar.papermc.io/api/v1/projects/${HANGAR_SLUG}/versions" \
-            -H "Authorization: Bearer ${HANGAR_TOKEN}" \
-            -H "Content-Type: multipart/form-data" \
-            -F "version-string=${VERSION}" \
-            -F "channel=Release" \
-            -F "platformVersions={\"PAPER\": [\"1.21\", \"1.21.1\", \"1.21.2\", \"1.21.3\", \"1.21.4\", \"1.21.5\", \"1.21.6\", \"1.21.7\", \"1.21.8\", \"1.21.9\", \"1.21.10\", \"1.21.11\"]}" \
-            -F "plugin-dependencies={}" \
-            -F "files=@${JAR_FILE}"
+          # Extract JWT token from response
+          JWT_TOKEN=$(echo "${AUTH_RESPONSE}" | grep -o '"token":"[^"]*' | cut -d'"' -f4)
+          
+          if [ -z "$JWT_TOKEN" ]; then
+            echo "Failed to authenticate with Hangar API"
+            echo "Response: ${AUTH_RESPONSE}"
+            exit 1
+          fi
+          
+          echo "Authentication successful!"
+          
+          # Step 2: Create version using JWT
+          echo "Creating version on Hangar..."
+          
+          # Prepare the changelog from release notes
+          CHANGELOG=$(cat RELEASE_NOTES.md | sed 's/"/\\"/g' | tr '\n' ' ')
+          
+          # Create version JSON matching Hangar API format
+          cat > version.json << EOF
+          {
+            "version": "${VERSION}",
+            "channel": "Release",
+            "description": "${CHANGELOG}",
+            "platformDependencies": {
+              "PAPER": ["1.21", "1.21.1", "1.21.2", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7", "1.21.8", "1.21.9", "1.21.10", "1.21.11"]
+            },
+            "pluginDependencies": {
+              "PAPER": []
+            },
+            "files": [
+              {"platforms": ["PAPER"]}
+            ]
+          }
+          EOF
+          
+          # Upload to Hangar using the correct endpoint
+          UPLOAD_RESPONSE=$(curl -s -X POST "https://hangar.papermc.io/api/v1/projects/${HANGAR_SLUG}/upload" \
+            -H "Authorization: ${JWT_TOKEN}" \
+            -H "User-Agent: NetherRatio-CI/1.0" \
+            -F "versionUpload=@version.json;type=application/json" \
+            -F "files=@${JAR_FILE};type=application/java-archive")
+          
+          echo "Upload response: ${UPLOAD_RESPONSE}"
+          
+          # Check if upload was successful
+          if echo "${UPLOAD_RESPONSE}" | grep -q "isHangarApiException"; then
+            echo "::warning::Hangar upload failed: ${UPLOAD_RESPONSE}"
+            echo "Continuing with workflow..."
+          else
+            echo "Hangar upload completed successfully!"
+          fi
 
       - name: Publish to Modrinth
         uses: Kir-Antipov/mc-publish@v3.3
