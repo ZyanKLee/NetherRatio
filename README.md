@@ -1,6 +1,6 @@
 # NetherRatio
 
-[![Paper](https://img.shields.io/badge/Paper-1.21.4-blue?style=for-the-badge)](https://papermc.io/)
+[![Paper](https://img.shields.io/badge/Paper-1.21.10-blue?style=for-the-badge)](https://papermc.io/)
 [![Java](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=openjdk)](https://openjdk.org/)
 
 A Paper/Spigot plugin that allows you to customize the Nether-to-Overworld coordinate ratio for portal travel. Perfect for servers that want to change the vanilla 8:1 ratio to suit their world design!
