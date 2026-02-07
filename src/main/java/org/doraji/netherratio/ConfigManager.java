@@ -25,11 +25,17 @@ public class ConfigManager {
     private FileConfiguration config;
     public static final String RATIO_VALUE = "value";
     public static final String WORLD_PAIRS = "world-pairs";
+    public static final String COORDINATE_BOUNDS = "coordinate-bounds";
     
     private Map<String, String> overworldToNether;
     private Map<String, String> netherToOverworld;
     private Map<String, Double> worldPairRatios;
     private double defaultRatio;
+    private boolean boundsEnabled;
+    private int minX;
+    private int maxX;
+    private int minZ;
+    private int maxZ;
 
     /**
      * Constructs a new ConfigManager.
@@ -51,8 +57,34 @@ public class ConfigManager {
      */
     private void loadDefaultSettings() {
         config.addDefault(RATIO_VALUE, 8);
+        config.addDefault(COORDINATE_BOUNDS + ".enabled", false);
+        config.addDefault(COORDINATE_BOUNDS + ".min-x", -29999968);
+        config.addDefault(COORDINATE_BOUNDS + ".max-x", 29999968);
+        config.addDefault(COORDINATE_BOUNDS + ".min-z", -29999968);
+        config.addDefault(COORDINATE_BOUNDS + ".max-z", 29999968);
         config.options().copyDefaults(true);
         plugin.saveConfig();
+        loadCoordinateBounds();
+    }
+    
+    /**
+     * Loads coordinate bounds configuration.
+     */
+    private void loadCoordinateBounds() {
+        boundsEnabled = config.getBoolean(COORDINATE_BOUNDS + ".enabled", false);
+        minX = config.getInt(COORDINATE_BOUNDS + ".min-x", -29999968);
+        maxX = config.getInt(COORDINATE_BOUNDS + ".max-x", 29999968);
+        minZ = config.getInt(COORDINATE_BOUNDS + ".min-z", -29999968);
+        maxZ = config.getInt(COORDINATE_BOUNDS + ".max-z", 29999968);
+        
+        if (boundsEnabled) {
+            Map<String, String> replacements = new HashMap<>();
+            replacements.put("minX", String.valueOf(minX));
+            replacements.put("maxX", String.valueOf(maxX));
+            replacements.put("minZ", String.valueOf(minZ));
+            replacements.put("maxZ", String.valueOf(maxZ));
+            plugin.getLogger().info(plugin.getMessagesManager().getMessage("config.bounds-enabled", replacements));
+        }
     }
     
     /**
@@ -211,11 +243,84 @@ public class ConfigManager {
     }
     
     /**
+     * Checks if coordinate bounds are enabled.
+     * 
+     * @return true if bounds checking is enabled
+     */
+    public boolean areBoundsEnabled() {
+        return boundsEnabled;
+    }
+    
+    /**
+     * Checks if coordinates are within the configured bounds.
+     * 
+     * @param x The X coordinate
+     * @param z The Z coordinate
+     * @return true if coordinates are within bounds or bounds are disabled
+     */
+    public boolean areCoordinatesWithinBounds(double x, double z) {
+        if (!boundsEnabled) {
+            return true;
+        }
+        return x >= minX && x <= maxX && z >= minZ && z <= maxZ;
+    }
+    
+    /**
+     * Clamps coordinates to the configured bounds.
+     * 
+     * @param x The X coordinate
+     * @param z The Z coordinate
+     * @return Array with [clampedX, clampedZ]
+     */
+    public double[] clampCoordinates(double x, double z) {
+        double clampedX = Math.max(minX, Math.min(maxX, x));
+        double clampedZ = Math.max(minZ, Math.min(maxZ, z));
+        return new double[]{clampedX, clampedZ};
+    }
+    
+    /**
+     * Gets the minimum X coordinate.
+     * 
+     * @return The minimum X value
+     */
+    public int getMinX() {
+        return minX;
+    }
+    
+    /**
+     * Gets the maximum X coordinate.
+     * 
+     * @return The maximum X value
+     */
+    public int getMaxX() {
+        return maxX;
+    }
+    
+    /**
+     * Gets the minimum Z coordinate.
+     * 
+     * @return The minimum Z value
+     */
+    public int getMinZ() {
+        return minZ;
+    }
+    
+    /**
+     * Gets the maximum Z coordinate.
+     * 
+     * @return The maximum Z value
+     */
+    public int getMaxZ() {
+        return maxZ;
+    }
+    
+    /**
      * Reloads the configuration and world pairs.
      */
     public void reload() {
         plugin.reloadConfig();
         this.config = plugin.getConfig();
+        loadCoordinateBounds();
         loadWorldPairs();
     }
 

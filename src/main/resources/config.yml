@@ -6,6 +6,17 @@ language: en
 # For vanilla Minecraft behavior, set to 8
 value: 8
 
+# Coordinate bounds - Prevent players from being teleported outside safe areas
+# This helps avoid teleportation into ungenerated chunks or beyond world borders
+coordinate-bounds:
+  enabled: false
+  # Minecraft's world border default is ±29,999,984 blocks
+  # These values apply to the destination coordinates (after ratio calculation)
+  min-x: -29999968
+  max-x: 29999968
+  min-z: -29999968
+  max-z: 29999968
+
 # World pairs for portal travel
 # Define which overworld connects to which nether world
 #

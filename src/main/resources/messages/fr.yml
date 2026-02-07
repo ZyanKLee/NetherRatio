@@ -33,3 +33,4 @@ config:
   world-pair-loaded: "Paire de mondes chargée : {overworld} <-> {nether}"
   world-not-found-overworld: "Impossible de trouver le monde Nether lié pour l'overworld : {world}. Vérifiez world-pairs dans config.yml"
   world-not-found-nether: "Impossible de trouver l'overworld lié pour le Nether : {world}. Vérifiez world-pairs dans config.yml"
+  bounds-enabled: "Limites de coordonnées activées : X[{minX}, {maxX}] Z[{minZ}, {maxZ}]"

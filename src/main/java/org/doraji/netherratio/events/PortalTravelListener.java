@@ -134,6 +134,22 @@ public class PortalTravelListener implements Listener {
             return null;
         }
 
+        // Check coordinate bounds if enabled
+        if (cm.areBoundsEnabled() && !cm.areCoordinatesWithinBounds(newX, newZ)) {
+            double[] clamped = cm.clampCoordinates(newX, newZ);
+            double clampedX = clamped[0];
+            double clampedZ = clamped[1];
+            
+            // Log the clamping
+            plugin.getLogger().info(String.format(
+                "Clamped portal destination from (%.2f, %.2f) to (%.2f, %.2f) in %s",
+                newX, newZ, clampedX, clampedZ, toWorld.getName()
+            ));
+            
+            newX = clampedX;
+            newZ = clampedZ;
+        }
+
         return new Location(toWorld, newX, from.getY(), newZ, from.getYaw(), from.getPitch());
     }
 }

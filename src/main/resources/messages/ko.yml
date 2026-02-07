@@ -35,3 +35,4 @@ config:
   world-pair-loaded: "월드 쌍 로드됨: {overworld} <-> {nether}"
   world-not-found-overworld: "오버월드 {world}에 대한 네더 월드를 찾을 수 없습니다. config.yml의 world-pairs를 확인하세요"
   world-not-found-nether: "네더 {world}에 대한 오버월드를 찾을 수 없습니다. config.yml의 world-pairs를 확인하세요"
+  bounds-enabled: "좌표 제한 활성화됨: X[{minX}, {maxX}] Z[{minZ}, {maxZ}]"

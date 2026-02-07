@@ -35,3 +35,4 @@ config:
   world-pair-loaded: "Loaded world pair: {overworld} <-> {nether}"
   world-not-found-overworld: "Could not find linked nether world for overworld: {world}. Check world-pairs in config.yml"
   world-not-found-nether: "Could not find linked overworld for nether: {world}. Check world-pairs in config.yml"
+  bounds-enabled: "Coordinate bounds enabled: X[{minX}, {maxX}] Z[{minZ}, {maxZ}]"
