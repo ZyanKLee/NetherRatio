@@ -304,7 +304,7 @@ mvn clean package
 # The compiled JAR will be in target/
 ```
 
-The built plugin will be available at `target/NetherRatio-2.2.1.jar`
+The built plugin will be available at `target/NetherRatio-2.2.2.jar`
 
 ## 🐛 Troubleshooting
 
