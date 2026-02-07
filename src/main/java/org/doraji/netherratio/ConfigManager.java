@@ -17,7 +17,7 @@ import java.util.Map;
  * @author xDxRAx (Original Author)
  * @author NetherRatio Team
  * @author ZyanKLee (Maintainer)
- * @version 2.2.2
+ * @version 2.2.3
  */
 public class ConfigManager {
 
