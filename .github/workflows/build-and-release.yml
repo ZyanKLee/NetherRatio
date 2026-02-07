@@ -30,11 +30,22 @@ jobs:
         id: version
         run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
 
+      - name: Install git-cliff
+        run: |
+          curl -sL https://github.com/orhun/git-cliff/releases/download/v2.7.0/git-cliff-2.7.0-x86_64-unknown-linux-gnu.tar.gz | tar xz
+          sudo mv git-cliff-2.7.0/git-cliff /usr/local/bin/
+          rm -rf git-cliff-2.7.0
+
+      - name: Generate release notes
+        run: |
+          # Generate changelog for just this release
+          /usr/local/bin/git-cliff --tag v${{ steps.version.outputs.VERSION }} --unreleased --strip all > RELEASE_NOTES.md
+
       - name: Create Release and Upload Asset
         uses: softprops/action-gh-release@v2
         with:
           files: target/NetherRatio-*.jar
-          body_path: CHANGELOG.md
+          body_path: RELEASE_NOTES.md
           fail_on_unmatched_files: true
 
       - name: Publish to Hangar
@@ -48,8 +59,8 @@ jobs:
           HANGAR_SLUG="${{ secrets.HANGAR_PROJECT_SLUG }}"
           JAR_FILE=$(ls target/NetherRatio-*.jar)
           
-          # Read changelog
-          CHANGELOG=$(cat CHANGELOG.md | head -n 50)
+          # Use the release notes generated earlier
+          CHANGELOG=$(cat RELEASE_NOTES.md)
           
           # Create version on Hangar
           curl -X POST "https://hangar.papermc.io/api/v1/projects/${HANGAR_SLUG}/versions" \
@@ -91,6 +102,6 @@ jobs:
             1.21.10
             1.21.11
           
-          changelog-file: CHANGELOG.md
+          changelog-file: RELEASE_NOTES.md
           java: |
             21
