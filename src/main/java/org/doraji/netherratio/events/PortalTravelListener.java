@@ -22,7 +22,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
  * @author xDxRAx (Original Author)
  * @author NetherRatio Team
  * @author ZyanKLee (Maintainer)
- * @version 2.3.1
+ * @version 2.3.2
  */
 public class PortalTravelListener implements Listener {
 
