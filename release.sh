@@ -46,6 +46,32 @@ fi
 
 echo "✅ No unstaged changes found."
 
+# --- Check branch and sync status ---
+echo "🔍 Checking branch and sync status..."
+
+# Fetch latest changes from remote
+git fetch origin master
+
+# Check if we're on master branch
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$CURRENT_BRANCH" != "master" ]; then
+    echo "Error: You are currently on branch '$CURRENT_BRANCH', not 'master'."
+    echo "Please switch to master branch before releasing:"
+    echo "  git checkout master"
+    exit 1
+fi
+
+# Check if local master is behind origin/master
+BEHIND_COUNT=$(git rev-list HEAD..origin/master --count)
+if [ "$BEHIND_COUNT" -gt 0 ]; then
+    echo "Error: Your local master branch is behind origin/master by $BEHIND_COUNT commit(s)."
+    echo "Please pull the latest changes before releasing:"
+    echo "  git pull origin master"
+    exit 1
+fi
+
+echo "✅ On master branch and up-to-date with origin/master."
+
 # --- Update version in pom.xml ---
 echo "🔧 Updating version in $POM_FILE..."
 # Use awk to only replace the project version (first <version> after <artifactId>)
