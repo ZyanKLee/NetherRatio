@@ -392,9 +392,9 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 🔗 Links
 
-- [Download on Modrinth](https://modrinth.com/plugin/netherratio)
+- [Download on Modrinth](https://modrinth.com/plugin/netherratio-ng)
+- [Download on PaperMC](https://hangar.papermc.io/ZyanKLee/NetherRatio-NG)
 - [Report Issues](https://github.com/ZyanKLee/NetherRatio/issues)
-- [Paper Documentation](https://docs.papermc.io/)
 
 ## 💖 Support
 
@@ -405,10 +405,10 @@ If you find this plugin useful, please consider:
 
 ## 🙏 Credits
 
-This project is a fork and continuation of the original work by [xDxRAx](https://github.com/xDxRAx).
+This project is a fork and continuation of the original work by [xDxRAx](https://github.com/xDxRAx/NetherRatio).
 
-**Original Author:** [xDxRAx](https://github.com/xDxRAx)  
-**Current Maintainer:** [ZyanKLee](https://github.com/ZyanKLee)
+**Original Project:** [NetherRatio](https://github.com/xDxRAx/NetherRatio)
+**Original Author:** [xDxRAx](https://github.com/xDxRAx)
 
 Special thanks to the original author for creating the foundation of this plugin!
 
