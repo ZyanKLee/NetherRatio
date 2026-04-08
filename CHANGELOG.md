@@ -2,7 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.3.1] - 2026-02-08
+## [2.4.0] - 2026-04-08
+
+### Added
+
+- Improve changelog preparation for Hangar version creation using JSON escaping
+- Folia support
+
+## [2.3.1] - 2026-02-07
 
 ### Added
 
@@ -11,6 +18,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - **release**: Update CHANGELOG.md with version number and date after release
+- Release v2.3.1
 
 ## [2.3.0] - 2026-02-07
 
