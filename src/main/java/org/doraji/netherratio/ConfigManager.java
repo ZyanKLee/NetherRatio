@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Manages configuration for the NetherRatio plugin.
@@ -47,11 +48,11 @@ public class ConfigManager {
     public ConfigManager(NetherRatio plugin) {
         this.plugin = plugin;
         this.config = plugin.getConfig();
-        this.overworldToNether = new HashMap<>();
-        this.netherToOverworld = new HashMap<>();
-        this.worldPairRatios = new HashMap<>();
-        this.worldPairOffsetX = new HashMap<>();
-        this.worldPairOffsetZ = new HashMap<>();
+        this.overworldToNether = new ConcurrentHashMap<>();
+        this.netherToOverworld = new ConcurrentHashMap<>();
+        this.worldPairRatios = new ConcurrentHashMap<>();
+        this.worldPairOffsetX = new ConcurrentHashMap<>();
+        this.worldPairOffsetZ = new ConcurrentHashMap<>();
         loadDefaultSettings();
         loadWorldPairs();
     }
