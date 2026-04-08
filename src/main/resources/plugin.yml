@@ -2,6 +2,7 @@ name: NetherRatio
 version: '2.3.2'
 main: org.doraji.netherratio.NetherRatio
 api-version: '1.21'
+folia-supported: true
 commands:
   netherratio:
     description: Manage nether-overworld ratios and calculate portal coordinates.

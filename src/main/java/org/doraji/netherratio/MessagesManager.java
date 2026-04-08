@@ -1,6 +1,6 @@
 package org.doraji.netherratio;
 
-import org.bukkit.ChatColor;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -79,7 +79,8 @@ public class MessagesManager {
      */
     public String getMessage(String path) {
         String message = messages.getString(path, "Missing message: " + path);
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return LegacyComponentSerializer.legacySection().serialize(
+                LegacyComponentSerializer.legacyAmpersand().deserialize(message));
     }
     
     /**
