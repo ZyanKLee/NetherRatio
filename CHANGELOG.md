@@ -2,12 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.4.0] - 2026-04-08
+## [2.4.1] - 2026-04-08
 
 ### Added
 
+- Enhance release script with branch and sync status checks
 - Improve changelog preparation for Hangar version creation using JSON escaping
 - Folia support
+- Add Folia support to the publishing workflow
+
+### Changed
+
+- **deps-dev**: Bump org.apache.maven.plugins:maven-shade-plugin
+- Release v2.4.0
+
+## [2.3.2] - 2026-02-08
+
+### Added
+
+- Add GNU General Public License version 3 to the repository
+
+### Changed
+
+- **deps-dev**: Bump org.apache.maven.plugins:maven-compiler-plugin
+- **deps-dev**: Bump org.apache.maven.plugins:maven-shade-plugin
+- Release v2.3.2
 
 ## [2.3.1] - 2026-02-07
 
