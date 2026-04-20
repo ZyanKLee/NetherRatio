@@ -67,8 +67,6 @@ public class ConfigManager {
         config.addDefault(COORDINATE_BOUNDS + ".max-x", 29999968);
         config.addDefault(COORDINATE_BOUNDS + ".min-z", -29999968);
         config.addDefault(COORDINATE_BOUNDS + ".max-z", 29999968);
-        config.options().copyDefaults(true);
-        plugin.saveConfig();
         loadCoordinateBounds();
     }
     
@@ -301,6 +299,7 @@ public class ConfigManager {
         config.set(RATIO_VALUE, ratio);
         plugin.saveConfig();
         this.config = plugin.getConfig();
+        loadWorldPairs();
     }
     
     /**
