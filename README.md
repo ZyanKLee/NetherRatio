@@ -1,7 +1,7 @@
 # NetherRatio
 
-[![Paper](https://img.shields.io/badge/Paper-1.21.10-blue?style=for-the-badge)](https://papermc.io/)
-[![Java](https://img.shields.io/badge/Java-21-orange?style=for-the-badge&logo=openjdk)](https://openjdk.org/)
+[![Paper](https://img.shields.io/badge/Paper-26.1-blue?style=for-the-badge)](https://papermc.io/)
+[![Java](https://img.shields.io/badge/Java-25-orange?style=for-the-badge&logo=openjdk)](https://openjdk.org/)
 
 A Paper/Spigot plugin that allows you to customize the Nether-to-Overworld coordinate ratio for portal travel. Perfect for servers that want to change the vanilla 8:1 ratio to suit their world design!
 
@@ -20,8 +20,8 @@ A Paper/Spigot plugin that allows you to customize the Nether-to-Overworld coord
 
 ## 📋 Requirements
 
-- **Server**: Paper 1.21.4+ (or compatible Spigot fork)
-- **Java**: Java 21 or higher
+- **Server**: Paper 26.1+ (or compatible fork)
+- **Java**: Java 25 or higher
 - **Dependencies**: None required
 
 ## 📥 Installation
@@ -324,7 +324,7 @@ The plugin uses the `world-pairs` configuration to determine which Nether world 
 ### Prerequisites
 - Git
 - Maven 3.6+
-- Java 21 JDK
+- Java 25 JDK
 
 ### Build Steps
 
