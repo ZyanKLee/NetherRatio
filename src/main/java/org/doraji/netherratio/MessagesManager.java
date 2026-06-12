@@ -5,9 +5,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,8 +36,8 @@ public class MessagesManager {
         
         // Save default message files if they don't exist
         File messagesDir = new File(plugin.getDataFolder(), "messages");
-        if (!messagesDir.exists()) {
-            messagesDir.mkdirs();
+        if (!messagesDir.exists() && !messagesDir.mkdirs()) {
+            plugin.getLogger().warning("Could not create messages directory: " + messagesDir.getAbsolutePath());
         }
         
         // Save default language files
@@ -78,7 +75,10 @@ public class MessagesManager {
      * @return The message with color codes translated
      */
     public String getMessage(String path) {
-        String message = messages.getString(path, "Missing message: " + path);
+        String message = messages.getString(path);
+        if (message == null) {
+            message = "Missing message: " + path;
+        }
         return LegacyComponentSerializer.legacySection().serialize(
                 LegacyComponentSerializer.legacyAmpersand().deserialize(message));
     }

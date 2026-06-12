@@ -1,5 +1,6 @@
 package org.doraji.netherratio;
 
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.doraji.netherratio.events.PortalTravelListener;
 import org.doraji.netherratio.commands.WorldRatioCommand;
@@ -33,7 +34,12 @@ public final class NetherRatio extends JavaPlugin {
         getLogger().info(messagesManager.getMessage("plugin.enabled"));
         this.configManager = new ConfigManager(this);
         getServer().getPluginManager().registerEvents(new PortalTravelListener(this), this);
-        this.getCommand("netherratio").setExecutor(new WorldRatioCommand(this));
+        PluginCommand command = this.getCommand("netherratio");
+        if (command != null) {
+            command.setExecutor(new WorldRatioCommand(this));
+        } else {
+            getLogger().severe("Command 'netherratio' is not defined in plugin.yml");
+        }
     }
 
     /**
