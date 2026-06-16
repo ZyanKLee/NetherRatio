@@ -1,5 +1,5 @@
 name: NetherRatio
-version: '2.5.0'
+version: 'v3.0.0'
 main: org.doraji.netherratio.NetherRatio
 api-version: '26.1'
 folia-supported: true

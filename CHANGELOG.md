@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v3.0.0] - 2026-06-17
+
+### Added
+
+- Target Paper 26.1 and Java 25
+
+Ci
+
+- Add build workflow for pushes and pull requests
+- Add static analysis, coverage, and dependency checks to the build
+- Restrict GITHUB_TOKEN to contents: read
+
+## [2.5.0] - 2026-06-10
+
+### Added
+
+- Folia support is defined in project settings
+
+### Changed
+
+- Release v2.5.0
+
+### Fixed
+
+- Stop overwriting config.yml with stale in-memory state on shutdown
+- Apply coordinate offsets in /netherratio calc
+- Revert paper-api to 1.21.11-R0.1-SNAPSHOT
+
 ## [2.4.1] - 2026-04-08
 
 ### Added
@@ -15,6 +43,7 @@ All notable changes to this project will be documented in this file.
 
 - **deps-dev**: Bump org.apache.maven.plugins:maven-shade-plugin
 - Release v2.4.0
+- Release v2.4.1
 
 ## [2.3.2] - 2026-02-08
 

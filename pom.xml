@@ -6,7 +6,7 @@
 
     <groupId>org.doraji</groupId>
     <artifactId>NetherRatio</artifactId>
-    <version>2.5.0</version>
+    <version>v3.0.0</version>
     <packaging>jar</packaging>
 
     <name>NetherRatio</name>
