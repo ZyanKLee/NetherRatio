@@ -2,11 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
-## [v3.0.0] - 2026-06-17
+## [3.0.1] - 2026-06-17
+
+### Changed
+
+- **deps-dev**: Bump org.junit.jupiter:junit-jupiter
+- **deps-dev**: Bump org.apache.maven.plugins:maven-surefire-plugin
+
+### Fixed
+
+- Release script version prefix
+
+## [3.0.0] - 2026-06-16
 
 ### Added
 
 - Target Paper 26.1 and Java 25
+
+### Changed
+
+- Release vv3.0.0
 
 Ci
 
