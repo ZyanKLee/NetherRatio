@@ -33,7 +33,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-NEW_VERSION=$1
+NEW_VERSION="${1#v}"
 TAG_NAME="v$NEW_VERSION"
 
 echo "🚀 Starting release process for version $NEW_VERSION..."
