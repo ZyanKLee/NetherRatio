@@ -1,0 +1,36 @@
+extends:
+  - '@commitlint/config-conventional'
+
+rules:
+  # Allowed types
+  type-enum:
+    - 2
+    - always
+    - - feat
+      - fix
+      - docs
+      - style
+      - refactor
+      - perf
+      - test
+      - chore
+      - ci
+      - revert
+  # Subject must not start uppercase (enforces clean lowercase summary lines)
+  subject-case:
+    - 2
+    - never
+    - - sentence-case
+      - start-case
+      - pascal-case
+      - upper-case
+  # Subject must not end with a period
+  subject-full-stop:
+    - 2
+    - never
+    - '.'
+  # Keep subjects readable
+  subject-max-length:
+    - 2
+    - always
+    - 100
