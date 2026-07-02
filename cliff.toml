@@ -36,6 +36,9 @@ filter_unconventional = true
 split_commits = false
 # regex for preprocessing the commit messages
 commit_preprocessors = [
+    # Regular merge: "Merge pull request #42 from owner/branch" -> link PR number
+    { pattern = 'Merge pull request #([0-9]+) from \S+', replace = "merge: [#${1}](https://github.com/ZyanKLee/NetherRatio/pull/${1})" },
+    # Squash / inline reference: "feat: add feature (#42)" -> link issue/PR
     { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "([#${2}](https://github.com/ZyanKLee/NetherRatio/issues/${2}))" },
 ]
 # regex for parsing and grouping commits
@@ -47,10 +50,11 @@ commit_parsers = [
     { message = "^refactor", group = "### Refactored" },
     { message = "^style", group = "### Styling" },
     { message = "^test", group = "### Testing" },
-    { message = "^chore\\(release\\): prepare for", skip = true },
+    # Skip the automated release commit produced by release.yml
+    { message = "^chore: [Rr]elease", skip = true },
     { message = "^chore\\(deps\\)", skip = true },
-    { message = "^chore\\(pr\\)", skip = true },
-    { message = "^chore\\(pull\\)", skip = true },
+    # Skip GitHub's merge commits — conventional content is in the individual commits
+    { message = "^[Mm]erge (pull request|branch)", skip = true },
     { message = "^chore", group = "### Changed" },
     { body = ".*security", group = "### Security" },
     { message = "^revert", group = "### Reverted" },
