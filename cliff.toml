@@ -36,7 +36,10 @@ filter_unconventional = true
 split_commits = false
 # regex for preprocessing the commit messages
 commit_preprocessors = [
-    { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "([#${2}](https://github.com/YOUR_USERNAME/NetherRatio/issues/${2}))" },
+    # Regular merge: "Merge pull request #42 from owner/branch" -> link PR number
+    { pattern = 'Merge pull request #([0-9]+) from \S+', replace = "merge: [#${1}](https://github.com/ZyanKLee/NetherRatio/pull/${1})" },
+    # Squash / inline reference: "feat: add feature (#42)" -> link issue/PR
+    { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "([#${2}](https://github.com/ZyanKLee/NetherRatio/issues/${2}))" },
 ]
 # regex for parsing and grouping commits
 commit_parsers = [
@@ -47,16 +50,17 @@ commit_parsers = [
     { message = "^refactor", group = "### Refactored" },
     { message = "^style", group = "### Styling" },
     { message = "^test", group = "### Testing" },
-    { message = "^chore\\(release\\): prepare for", skip = true },
+    # Skip the automated release commit produced by release.yml
+    { message = "^chore: [Rr]elease", skip = true },
     { message = "^chore\\(deps\\)", skip = true },
-    { message = "^chore\\(pr\\)", skip = true },
-    { message = "^chore\\(pull\\)", skip = true },
+    # Skip GitHub's merge commits — conventional content is in the individual commits
+    { message = "^[Mm]erge (pull request|branch)", skip = true },
     { message = "^chore", group = "### Changed" },
     { body = ".*security", group = "### Security" },
     { message = "^revert", group = "### Reverted" },
 ]
 # protect breaking changes from being skipped due to matching a skipping commit_parser
-protect_breaking_commits = false
+protect_breaking_commits = true
 # filter out the commits that are not matched by commit parsers
 filter_commits = false
 # glob pattern for matching git tags
