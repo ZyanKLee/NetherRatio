@@ -1,0 +1,115 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: >
+          Version bump strategy. "auto" derives the bump from conventional
+          commits since the last tag (patch/minor/major). Override with a
+          specific bump type when needed (e.g. after a hotfix-only cycle
+          that should nevertheless ship as a minor release).
+        required: false
+        default: auto
+        type: choice
+        options:
+          - auto
+          - patch
+          - minor
+          - major
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code (full history for git-cliff)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install git-cliff
+        run: |
+          curl -sL https://github.com/orhun/git-cliff/releases/download/v2.7.0/git-cliff-2.7.0-x86_64-unknown-linux-gnu.tar.gz | tar xz
+          sudo mv git-cliff-2.7.0/git-cliff /usr/local/bin/
+          rm -rf git-cliff-2.7.0
+
+      - name: Determine next version
+        id: version
+        run: |
+          BUMP="${{ inputs.bump }}"
+          if [ "$BUMP" = "auto" ]; then
+            NEXT=$(git-cliff --bumped-version)
+          else
+            CURRENT=$(git-cliff --current-version 2>/dev/null || git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+            # Strip leading 'v'
+            CURRENT_PLAIN="${CURRENT#v}"
+            MAJOR=$(echo "$CURRENT_PLAIN" | cut -d. -f1)
+            MINOR=$(echo "$CURRENT_PLAIN" | cut -d. -f2)
+            PATCH=$(echo "$CURRENT_PLAIN" | cut -d. -f3)
+            case "$BUMP" in
+              major) NEXT="v$((MAJOR + 1)).0.0" ;;
+              minor) NEXT="v${MAJOR}.$((MINOR + 1)).0" ;;
+              patch) NEXT="v${MAJOR}.${MINOR}.$((PATCH + 1))" ;;
+            esac
+          fi
+          # Ensure 'v' prefix
+          NEXT="v${NEXT#v}"
+          NEXT_PLAIN="${NEXT#v}"
+          echo "tag=${NEXT}"        >> "$GITHUB_OUTPUT"
+          echo "version=${NEXT_PLAIN}" >> "$GITHUB_OUTPUT"
+          echo "Next release: ${NEXT}"
+
+      - name: Generate CHANGELOG.md
+        run: |
+          git-cliff --tag "${{ steps.version.outputs.tag }}" --output CHANGELOG.md
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Bump version in pom.xml
+        run: |
+          V="${{ steps.version.outputs.version }}"
+          awk -v v="$V" '
+            /<artifactId>NetherRatio<\/artifactId>/ { found=1 }
+            found && /<version>/ && !replaced {
+              sub(/<version>.*<\/version>/, "<version>" v "</version>")
+              replaced=1
+            }
+            { print }
+          ' pom.xml > pom.xml.tmp && mv pom.xml.tmp pom.xml
+
+      - name: Bump version in plugin.yml
+        run: |
+          V="${{ steps.version.outputs.version }}"
+          sed -i "2s/version: '.*'/version: '$V'/" src/main/resources/plugin.yml
+
+      - name: Bump @version tag in Java sources
+        run: |
+          V="${{ steps.version.outputs.version }}"
+          find src/main/java -name '*.java' -exec sed -i "s/@version .*/@version $V/" {} +
+
+      - name: Bump version in README.md
+        run: |
+          V="${{ steps.version.outputs.version }}"
+          sed -i "s/NetherRatio-.*\.jar/NetherRatio-$V.jar/" README.md
+
+      - name: Verify build still passes
+        run: mvn -B verify --file pom.xml
+
+      - name: Commit, tag, and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          TAG="${{ steps.version.outputs.tag }}"
+          git add pom.xml src/main/resources/plugin.yml src/main/java CHANGELOG.md README.md
+          git commit -m "chore: Release ${TAG}"
+          git tag "${TAG}"
+          git push origin HEAD:master
+          git push origin "${TAG}"

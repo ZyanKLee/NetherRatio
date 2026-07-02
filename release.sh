@@ -1,21 +1,23 @@
 #!/bin/bash
 #
-# release.sh
+# release.sh  [DEPRECATED]
 #
-# A script to automate the release process for the NetherRatio plugin.
+# The canonical release process is now the "Release" GitHub Actions workflow
+# (.github/workflows/release.yml). It derives the next version automatically
+# from conventional commits using git-cliff and runs the full verification
+# suite before tagging.
 #
-# This script performs the following actions:
-# 1. Validates that a version number is provided.
-# 2. Updates the version in pom.xml, plugin.yml, and all .java source files.
-# 3. Commits the changes with a standardized message.
-# 4. Creates a Git tag for the new version.
-# 5. Pushes the commit and the tag to the remote repository.
+# Trigger it via:
+#   GitHub UI → Actions → Release → Run workflow
 #
-# Usage:
+# This script is kept as a local emergency fallback only.
+# ---------------------------------------------------------------------------
+#
+# Manual usage (emergency fallback):
 #   ./release.sh <version>
 #
 # Example:
-#   ./release.sh 2.1.0
+#   ./release.sh 3.1.0
 #
 
 # --- Configuration ---
