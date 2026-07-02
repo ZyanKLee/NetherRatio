@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.3] - 2026-07-02
+
+### Fixed
+
+- Publish directly from release workflow instead of relying on tag trigger
+
+Ci
+
+- Remove obsolete build-and-release.yml
+
+Merge
+
+- [#25](https://github.com/ZyanKLee/NetherRatio/pull/25)
+
 ## [3.0.2] - 2026-07-02
 
 ### Changed
