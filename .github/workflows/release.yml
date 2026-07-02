@@ -103,6 +103,13 @@ jobs:
       - name: Verify build still passes
         run: mvn -B verify --file pom.xml
 
+      - name: Generate release notes
+        run: |
+          # --latest generates notes for the range since the previous tag.
+          # Run before tagging so the new tag doesn't exist yet and
+          # git-cliff treats all commits since the last tag as "unreleased".
+          git-cliff --tag "${{ steps.version.outputs.tag }}" --unreleased --strip all > RELEASE_NOTES.md
+
       - name: Commit, tag, and push
         run: |
           git config user.name  "github-actions[bot]"
@@ -113,3 +120,77 @@ jobs:
           git tag "${TAG}"
           git push origin HEAD:master
           git push origin "${TAG}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          files: target/NetherRatio-*.jar
+          body_path: RELEASE_NOTES.md
+          fail_on_unmatched_files: true
+
+      - name: Publish to Hangar
+        env:
+          HANGAR_API_KEY: ${{ secrets.HANGAR_TOKEN }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          HANGAR_SLUG="${{ secrets.HANGAR_PROJECT_SLUG }}"
+          JAR_FILE=$(ls target/NetherRatio-*.jar | grep -v original)
+
+          echo "Authenticating with Hangar..."
+          AUTH_RESPONSE=$(curl -s -X POST "https://hangar.papermc.io/api/v1/authenticate?apiKey=${HANGAR_API_KEY}" \
+            -H "User-Agent: NetherRatio-CI/1.0")
+          JWT_TOKEN=$(echo "${AUTH_RESPONSE}" | grep -o '"token":"[^"]*' | cut -d'"' -f4)
+
+          if [ -z "$JWT_TOKEN" ]; then
+            echo "Failed to authenticate with Hangar API: ${AUTH_RESPONSE}"
+            exit 1
+          fi
+
+          CHANGELOG=$(python3 -c "import json, sys; print(json.dumps(sys.stdin.read()))" < RELEASE_NOTES.md)
+          cat > version.json << EOF
+          {
+            "version": "${VERSION}",
+            "channel": "Release",
+            "description": ${CHANGELOG},
+            "platformDependencies": {
+              "PAPER": ["26.1", "26.1.1", "26.1.2"]
+            },
+            "pluginDependencies": { "PAPER": [] },
+            "files": [{"platforms": ["PAPER"]}]
+          }
+          EOF
+
+          UPLOAD_RESPONSE=$(curl -s -X POST "https://hangar.papermc.io/api/v1/projects/${HANGAR_SLUG}/upload" \
+            -H "Authorization: ${JWT_TOKEN}" \
+            -H "User-Agent: NetherRatio-CI/1.0" \
+            -F "versionUpload=@version.json;type=application/json" \
+            -F "files=@${JAR_FILE};type=application/java-archive")
+
+          if echo "${UPLOAD_RESPONSE}" | grep -q "isHangarApiException"; then
+            echo "::warning::Hangar upload failed: ${UPLOAD_RESPONSE}"
+          else
+            echo "Hangar upload successful!"
+          fi
+
+      - name: Publish to Modrinth
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          modrinth-id: ${{ secrets.MODRINTH_PROJECT_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          files: target/NetherRatio-*.jar
+          name: NetherRatio ${{ steps.version.outputs.version }}
+          version: ${{ steps.version.outputs.version }}
+          version-type: release
+          loaders: |
+            paper
+            spigot
+            purpur
+            folia
+          game-versions: |
+            26.1
+            26.1.1
+            26.1.2
+          changelog-file: RELEASE_NOTES.md
+          java: |
+            25
