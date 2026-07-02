@@ -15,7 +15,7 @@ import org.doraji.netherratio.commands.WorldRatioCommand;
  * @author xDxRAx (Original Author)
  * @author NetherRatio Team
  * @author ZyanKLee (Maintainer)
- * @version 3.0.1
+ * @version 3.0.2
  */
 public final class NetherRatio extends JavaPlugin {
 
