@@ -1,10 +1,17 @@
 name: Build and Release
 
+# NOTE: The canonical release path is the "Release" workflow (release.yml),
+# which determines the version, bumps all files, builds, and publishes in
+# one self-contained run. It does NOT trigger this workflow — GitHub prevents
+# GITHUB_TOKEN-based pushes from triggering further workflows.
+#
+# This workflow remains as a fallback for tags pushed externally
+# (e.g. hotfix tags created manually via the CLI or GitHub UI).
 on:
   push:
     tags:
-      - 'v*' # Trigger on tags like v1.0, v2.0.1, etc.
-  workflow_dispatch: # Allows manual triggering
+      - 'v*'
+  workflow_dispatch:
 
 jobs:
   build-and-release:
