@@ -4,6 +4,7 @@ import org.doraji.netherratio.NetherRatio;
 import org.doraji.netherratio.ConfigManager;
 import org.doraji.netherratio.util.CoordinateMath;
 import org.bukkit.Location;
+import org.bukkit.PortalType;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -66,12 +67,17 @@ public class PortalTravelListener implements Listener {
      * Handles entity portal travel events.
      * 
      * <p>Applies coordinate ratio conversion to non-player entities traveling through portals,
-     * such as minecarts, items, or other mobs.</p>
+     * such as minecarts, items, or other mobs. Only nether portal events are processed;
+     * end portals and end gateways are left to vanilla behavior.</p>
      * 
      * @param event The EntityPortalEvent
      */
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityPortal(EntityPortalEvent event) {
+        if (event.getPortalType() != PortalType.NETHER) {
+            return;
+        }
+
         Location newTo = calculatePortalDestination(event.getFrom());
         if (newTo != null) {
             event.setTo(newTo);
