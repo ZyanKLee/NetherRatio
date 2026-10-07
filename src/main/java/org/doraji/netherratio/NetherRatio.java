@@ -17,7 +17,7 @@ import org.doraji.netherratio.commands.WorldRatioCommand;
  * @author ZyanKLee (Maintainer)
  * @version 3.0.3
  */
-public final class NetherRatio extends JavaPlugin {
+public class NetherRatio extends JavaPlugin {
 
     private ConfigManager configManager;
     private MessagesManager messagesManager;

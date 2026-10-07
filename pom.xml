@@ -207,5 +207,11 @@
             <version>6.1.1</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mockbukkit.mockbukkit</groupId>
+            <artifactId>mockbukkit-v26.1.2</artifactId>
+            <version>4.115.0</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
