@@ -275,10 +275,10 @@ public class ConfigManager {
     /**
      * Gets all configured overworld names.
      * 
-     * @return Set of overworld names
+     * @return Immutable snapshot of the overworld names; it does not change on a later reload
      */
     public java.util.Set<String> getOverworldNames() {
-        return overworldToNether.keySet();
+        return java.util.Set.copyOf(overworldToNether.keySet());
     }
     
     /**
