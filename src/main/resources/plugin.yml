@@ -1,7 +1,7 @@
 name: NetherRatio
 version: '3.0.3'
 main: org.doraji.netherratio.NetherRatio
-api-version: '26.1'
+api-version: '26.2'
 folia-supported: true
 commands:
   netherratio:
