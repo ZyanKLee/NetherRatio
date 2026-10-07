@@ -412,6 +412,10 @@ This project is a fork and continuation of the original work by [xDxRAx](https:/
 
 Special thanks to the original author for creating the foundation of this plugin!
 
+### AI-Assisted Development
+
+This project is developed with the help of AI coding assistants, though not exclusively. AI tools support tasks such as code review, bug analysis, writing tests and implementing fixes.
+
 ---
 
 **Made with ❤️ for the Minecraft community**
