@@ -150,6 +150,23 @@ public class PortalTravelListener implements Listener {
             newZ = clampedZ;
         }
 
-        return new Location(toWorld, newX, from.getY(), newZ, from.getYaw(), from.getPitch());
+        return new Location(toWorld, newX, clampY(from.getY(), toWorld), newZ, from.getYaw(), from.getPitch());
+    }
+
+    /**
+     * Clamps a Y coordinate into the usable height range of the destination world.
+     *
+     * <p>Mirrors vanilla portal placement: the upper bound is the lower of the build limit
+     * and the logical height, so an Overworld Y above the Nether's bedrock ceiling
+     * does not carry over.</p>
+     *
+     * @param y The source Y coordinate
+     * @param world The destination world
+     * @return The clamped Y coordinate
+     */
+    private static double clampY(double y, World world) {
+        int minY = world.getMinHeight();
+        int maxY = Math.min(world.getMaxHeight(), minY + world.getLogicalHeight()) - 1;
+        return Math.max(minY, Math.min(maxY, y));
     }
 }
